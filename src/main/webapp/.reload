@@ -1,0 +1,1 @@
+Glassfish has a nifty function where if you touch a .reload file within the webapp root directory, then glassfish will reload the webapp, including all libraries and classes. 
