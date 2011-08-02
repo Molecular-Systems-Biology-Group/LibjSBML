@@ -12,7 +12,6 @@ import org.sbml.libsbml.SBMLDocument
 import org.sbml.libsbml.SBMLReader
 
 import pt.cnbc.wikimodels.exceptions.BadFormatException
-import javax.resource.spi.SecurityException
 import xml._
 
 object SBMLHandler {
@@ -215,6 +214,8 @@ object LibSBMLLoader {
   var alreadyLoaded = false
 
   def apply() = {
+    import javax.resource.spi.SecurityException
+    //TODO Remove javax.resource.connector-api dependency from wm_libjsbml if this is not in wm_libjsbml anymore ;)
     if (alreadyLoaded == false) {
       //is this really necessary
       try {
