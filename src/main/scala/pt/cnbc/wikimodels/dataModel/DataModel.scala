@@ -19,7 +19,6 @@ import pt.cnbc.wikimodels.util.SBMLHandler
  * @author Alexandre Martins
  */
 trait DataModel extends RdfBean[DataModel]{
-    val sbmlHandler = new SBMLHandler()
     /**
      * Converts this data model to xnl form
      */
