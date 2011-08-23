@@ -33,8 +33,7 @@ abstract class Element extends DataModel{
     @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#metaid")
     var metaid:java.lang.String = null
 
-    //these two lines have to be repeated in any descendant of this class
-    //since annotations are not inherited
+    //TODO: check if these two lines have to be repeated in any descendant of this class. Annotations might not be inherited
     @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#notes")
     var notes:String = null
 

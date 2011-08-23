@@ -10,24 +10,35 @@ package pt.cnbc.wikimodels.dataVisitors
 
 import pt.cnbc.wikimodels.dataModel._
 
+
 class SBMLElemValidator(val elem:Element) {
   import pt.cnbc.wikimodels.exceptions.BadFormatException
 
-  def validate():Boolean = elem match {
-    case cp:Compartment => true
-    case ct:Constraint => true
-    case fd:FunctionDefinition => true
-    case kl:KineticLaw => true
-    case msr:ModifierSpeciesReference => true
-    case p:Parameter => true
-    case r:Reaction => true
-    case m:SBMLModel => true
-    case s:Species => true
-    case sr:SpeciesReference => true
+  /**
+   * Validates according to SBML rules and without
+   */
+  def validateSBMLStrictly():Boolean = elem match {
+    case cp:Compartment => false
+    case ct:Constraint => false
+    case fd:FunctionDefinition => false
+    case kl:KineticLaw => false
+    case msr:ModifierSpeciesReference => false
+    case p:Parameter => false
+    case r:Reaction => false
+    case m:SBMLModel => false
+    case s:Species => false
+    case sr:SpeciesReference => false
     case _ => throw new BadFormatException("Unknow element inside SBMLModel when generating SBML Lvel 2 Version 4")
+  }
+
+  def validateSBMLloosely():Boolean ={
+          val o:Option[Int] = Some(1)
+    false
   }
 }
 
+
 object SBMLElemValidator{
+
   implicit def SBMLToSBMLValidator(elem:Element ) = new SBMLElemValidator(elem)
 }
