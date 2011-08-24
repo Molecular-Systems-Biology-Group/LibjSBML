@@ -8,21 +8,17 @@
 
 package pt.cnbc.wikimodels.dataModel
 
-import scalaj.collection.Imports._
-
 import scala.collection.JavaConversions._
 import scala.reflect.BeanInfo
-import thewebsemantic.Id
-import thewebsemantic.Namespace
-import thewebsemantic.RdfProperty
-
-import pt.cnbc.wikimodels.util.SBMLHandler
 import xml.{NodeSeq, Elem, XML}
+import thewebsemantic._
+import pt.cnbc.wikimodels.util.SBMLHandler
+
 
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class KineticLaw() extends Element{
-
+  override final val sbmlType = "KineticLaw"
   var math:String = null
 
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasParameter")
@@ -43,7 +39,7 @@ case class KineticLaw() extends Element{
            (xmlKineticLaw \ "math"))
       this.listOfParameters =
         (xmlKineticLaw \ "listOfParameters" \ "parameter")
-        .map(i => new Parameter(i.asInstanceOf[scala.xml.Elem])).asJava
+        .map(i => new Parameter(i.asInstanceOf[scala.xml.Elem]))
 
   }
 

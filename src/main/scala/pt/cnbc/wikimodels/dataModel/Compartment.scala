@@ -25,6 +25,7 @@ import pt.cnbc.wikimodels.util.SBMLHandler
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class Compartment() extends Element {
+  override final val sbmlType = "Compartment"
   var id: String = null
   var name: String = null
   var compartmentType: String = null //not implemented yet

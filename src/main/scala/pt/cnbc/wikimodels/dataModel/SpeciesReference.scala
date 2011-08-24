@@ -19,6 +19,7 @@ import xml._
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class SpeciesReference() extends Element{
+  override final val sbmlType = "Reaction"
   var id:String = null
   var name:String = null
 

@@ -29,6 +29,9 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 abstract class Element extends DataModel{
+  val sbmlType = "SBase"
+
+
     @Id
     @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#metaid")
     var metaid:java.lang.String = null

@@ -8,8 +8,6 @@
 
 package pt.cnbc.wikimodels.dataModel
 
-import scalaj.collection.Imports._
-
 import scala.collection.JavaConversions._
 import scala.xml.NodeSeq
 
@@ -23,7 +21,7 @@ import pt.cnbc.wikimodels.util.SBMLHandler
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class Reaction() extends Element{
-
+  override final val sbmlType = "Reaction"
   var id:String = null
   var name:String = null
   var reversible:Boolean = true
@@ -64,13 +62,13 @@ case class Reaction() extends Element{
          (new SBMLHandler).convertStringToBool( (xmlReaction \ "@fast").text, false ))
     this.listOfReactants =
       (xmlReaction \ "listOfReactants" \ "speciesReference")
-      .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem])).asJava
+      .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem]))
     this.listOfProducts =
       (xmlReaction \ "listOfProducts" \ "speciesReference")
-      .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem])).asJava
+      .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem]))
     this.listOfModifiers =
       (xmlReaction \ "listOfModifiers" \ "modifierSpeciesReference")
-      .map(i => new ModifierSpeciesReference(i.asInstanceOf[scala.xml.Elem])).asJava
+      .map(i => new ModifierSpeciesReference(i.asInstanceOf[scala.xml.Elem]))
     if( (xmlReaction \ "kineticLaw").length > 0 )
         this.kineticLaw = new KineticLaw((xmlReaction \ "kineticLaw").head.asInstanceOf[scala.xml.Elem])
   }

@@ -11,7 +11,6 @@ package pt.cnbc.wikimodels.dataModel
 import java.util.Date
 
 import scala.collection.JavaConversions._
-import scalaj.collection.Imports._
 
 import scala.reflect.BeanInfo
 import scala.xml.Elem
@@ -39,6 +38,7 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 @RdfType("Model")
 case class SBMLModel() extends Element {
+  override final val sbmlType = "Model"
   var id: String = null
   var name: String = null
 
@@ -84,22 +84,22 @@ case class SBMLModel() extends Element {
           (new SBMLHandler).toStringOrNull((xmlModel \ "@name").text))
     this.listOfFunctionDefinitions =
             (xmlModel \ "listOfFunctionDefinitions" \ "functionDefinition")
-                    .map(i => new FunctionDefinition(i.asInstanceOf[scala.xml.Elem])).asJava
+                    .map(i => new FunctionDefinition(i.asInstanceOf[scala.xml.Elem]))
     this.listOfCompartments =
             (xmlModel \ "listOfCompartments" \ "compartment")
-                    .map(i => new Compartment(i.asInstanceOf[scala.xml.Elem])).asJava
+                    .map(i => new Compartment(i.asInstanceOf[scala.xml.Elem]))
     this.listOfSpecies =
             (xmlModel \ "listOfSpecies" \ "species")
-                    .map(i => new Species(i.asInstanceOf[scala.xml.Elem])).asJava
+                    .map(i => new Species(i.asInstanceOf[scala.xml.Elem]))
     this.listOfParameters =
             (xmlModel \ "listOfParameters" \ "parameter")
-                    .map(i => new Parameter(i.asInstanceOf[scala.xml.Elem])).asJava
+                    .map(i => new Parameter(i.asInstanceOf[scala.xml.Elem]))
     this.listOfConstraints =
             (xmlModel \ "listOfConstraints" \ "constraint")
-                    .map(i => new Constraint(i.asInstanceOf[scala.xml.Elem])).asJava
+                    .map(i => new Constraint(i.asInstanceOf[scala.xml.Elem]))
     this.listOfReactions =
             (xmlModel \ "listOfReactions" \ "reaction")
-                    .map(i => new Reaction(i.asInstanceOf[scala.xml.Elem])).asJava
+                    .map(i => new Reaction(i.asInstanceOf[scala.xml.Elem]))
   }
 
   /**

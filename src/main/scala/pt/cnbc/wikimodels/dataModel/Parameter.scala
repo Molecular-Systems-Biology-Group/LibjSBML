@@ -25,6 +25,7 @@ import pt.cnbc.wikimodels.util.SBMLHandler
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 //@RdfType("http://wikimodels.cnbc.pt/ontologies/sbml.owl#Parameter")
 case class Parameter() extends Element {
+  override final val sbmlType = "Parameter"
   //this s called SBMMLPArameter because, somehow, Jersey s
   var id: String = null
   var name: String = null

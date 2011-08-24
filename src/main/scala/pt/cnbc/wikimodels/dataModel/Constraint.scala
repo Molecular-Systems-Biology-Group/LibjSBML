@@ -21,6 +21,7 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class Constraint() extends Element {
+  override final val sbmlType = "Constraint"
   var id: String = null
   var name: String = null
   var math: String = null
