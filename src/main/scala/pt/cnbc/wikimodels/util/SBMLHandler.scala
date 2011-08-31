@@ -13,6 +13,7 @@ import org.sbml.libsbml.SBMLReader
 
 import pt.cnbc.wikimodels.exceptions.BadFormatException
 import xml._
+import pt.cnbc.wikimodels.sbml.namesspaces._
 
 object SBMLHandler {
   var LibSBMLLoaded = false
@@ -131,10 +132,10 @@ class SBMLHandler {
   }
 
   def addNamespaceToXHTML(nodeseq: NodeSeq): NodeSeq =
-    this.addNamespaceToXML(nodeseq, "http://www.w3c.org/1999/xhtml")
+    this.addNamespaceToXML(nodeseq, xmlns.XHTML)
 
   def addNamespaceToMathML(math: NodeSeq): NodeSeq =
-    this.addNamespaceToXML(math, "http://www.w3.org/1998/Math/MathML")
+    this.addNamespaceToXML(math, xmlns.XHTML)
 
 
   /**

@@ -9,8 +9,9 @@
 package pt.cnbc.wikimodels.util
 
 import scala.xml.transform.RewriteRule
-import pt.cnbc.wikimodels.exceptions.BadFormatException
 import xml._
+import pt.cnbc.wikimodels.exceptions.BadFormatException
+import pt.cnbc.wikimodels.sbml.namesspaces._
 
 
 /**
@@ -29,7 +30,7 @@ class AddNotesTagRule extends RewriteRule{
             new Elem(null,
                      i.label,
                      scala.xml.Null,
-                     NamespaceBinding(null, "http://www.w3c.org/1999/xhtml",TopScope),
+                     NamespaceBinding(null, xmlns.XHTML,TopScope),
                      i.child:_*)
           } ) }</notes>;
   }
