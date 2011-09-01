@@ -37,10 +37,15 @@
             <url>http://download.java.net/maven/2/</url>
             <layout>default</layout>
         </repository>
-        <repository>
-            <id>localMavenRepo</id>
-            <name>localMavenRepo</name>
-            <url>file:../localMavenRepo</url>
+        <repository><!-- for compilation within the module -->
+            <id>localMavenRepo5</id>
+            <name>localMavenRepo5</name>
+            <url>file:${basedir}/../localMavenRepo</url>
+        </repository>
+        <repository><!-- for compilation from the main project -->
+            <id>localMavenRepo6</id>
+            <name>localMavenRepo6</name>
+            <url>file:${basedir}/localMavenRepo</url>
         </repository>
     </repositories>
     <pluginRepositories>
