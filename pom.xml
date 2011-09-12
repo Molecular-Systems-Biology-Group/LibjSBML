@@ -103,11 +103,26 @@
             <artifactId>libsbmlj</artifactId>
             <version>3.4</version>
         </dependency>
+        <!-- TODO lets call Lift-common Box from java -->
+          <dependency>
+              <groupId>net.liftweb</groupId>
+              <artifactId>lift-common_${scala.version}</artifactId>
+              <version>${lift.version}</version>
+          </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
         <testSourceDirectory>src/test/scala</testSourceDirectory>
-        <plugins>      
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>

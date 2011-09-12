@@ -64,16 +64,16 @@ case class Species() extends Element{
         this.hasOnlySubstanceUnits = hasOnlySubstanceUnits
         this.boundaryCondition = boundaryCondition
         this.constant = constant
-      (new SBMLHandler).idExistsAndIsValid(this.id)
+      SBMLHandler.idExistsAndIsValid(this.id)
     }
 
     def this(xmlSpecies:Elem) = {
-        this((new SBMLHandler).toStringOrNull((xmlSpecies \ "@metaid").text),
-             (new SBMLHandler).checkCurrentLabelForNotes(xmlSpecies),
-             (new SBMLHandler).toStringOrNull((xmlSpecies \ "@id").text),
-             (new SBMLHandler).toStringOrNull((xmlSpecies \ "@name").text),
-             (new SBMLHandler).toStringOrNull((xmlSpecies \ "@speciesType").text),
-             (new SBMLHandler).toStringOrNull((xmlSpecies \ "@compartment").text),
+        this(SBMLHandler.toStringOrNull((xmlSpecies \ "@metaid").text),
+             SBMLHandler.checkCurrentLabelForNotes(xmlSpecies),
+             SBMLHandler.toStringOrNull((xmlSpecies \ "@id").text),
+             SBMLHandler.toStringOrNull((xmlSpecies \ "@name").text),
+             SBMLHandler.toStringOrNull((xmlSpecies \ "@speciesType").text),
+             SBMLHandler.toStringOrNull((xmlSpecies \ "@compartment").text),
              try{
                 java.lang.Double.parseDouble( (xmlSpecies \ "@initialAmount").text )
             } catch {
@@ -84,7 +84,7 @@ case class Species() extends Element{
             } catch {
                 case _ => null
             },
-             (new SBMLHandler).toStringOrNull((xmlSpecies \ "@substanceUnits").text),
+             SBMLHandler.toStringOrNull((xmlSpecies \ "@substanceUnits").text),
              try{
               (xmlSpecies \ "@hasOnlySubstanceUnits").text.toBoolean
              } catch {
@@ -116,7 +116,7 @@ case class Species() extends Element{
             boundaryCondition={boundaryCondition.toString}
             constant={constant.toString} >
             <!--order is important according to SBML Specifications-->
-            {new SBMLHandler().genNotesFromHTML(notes)}
+            {SBMLHandler.genNotesFromHTML(notes)}
         </species>
     }
     override def theId = this.id

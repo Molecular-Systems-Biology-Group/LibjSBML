@@ -31,36 +31,35 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 abstract class Element extends DataModel{
   val sbmlType = "SBase"
 
+  @Id
+  @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#metaid")
+  var metaid:java.lang.String = null
 
-    @Id
-    @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#metaid")
-    var metaid:java.lang.String = null
+  //TODO: check if these two lines have to be repeated in any descendant of this class. Annotations might not be inherited
+  @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#notes")
+  var notes:String = null
 
-    //TODO: check if these two lines have to be repeated in any descendant of this class. Annotations might not be inherited
-    @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#notes")
-    var notes:String = null
+  def setNotesFromXML(notes:NodeSeq) = {
+      this.notes = Group(SBMLHandler.addNamespaceToXHTML(notes)).toString()
+  }
 
-    def setNotesFromXML(notes:NodeSeq) = {
-        this.notes = Group((new SBMLHandler).addNamespaceToXHTML(notes)).toString()
-    }
+  def this(xmlModel:Elem) = {
+      this()
+      this.metaid = (xmlModel \ "@metaid").text
+      this.setNotesFromXML(xmlModel \ "notes")
+      //metaid stays mandatory for now
+      if(metaid == null){
+          //Note: It might be deleted from here to make the data model
+          //Note: independent from the data validation -> we 'll see.
+          throw new BadFormatException(
+              "Element constructor should never receive a null metaid.")
+      }
+  }
 
-    def this(xmlModel:Elem) = {
-        this()
-        this.metaid = (xmlModel \ "@metaid").text
-        this.setNotesFromXML(xmlModel \ "notes")
-        //metaid stays mandatory for now
-        if(metaid == null){
-            //Note: It might be deleted from here to make the data model
-            //Note: independent from the data validation -> we 'll see.
-            throw new BadFormatException(
-                "Element constructor should never receive a null metaid.")
-        }
-    }
-
-    override def toXML:Elem =
-    throw new pt.cnbc.wikimodels.exceptions
-    .NotImplementedException("toXML in class " + this.getClass +
-                             "is not implemente")
-    def theId:String = null
-    def theName:String = null
+  override def toXML:Elem =
+  throw new pt.cnbc.wikimodels.exceptions
+  .NotImplementedException("toXML in class " + this.getClass +
+                           "is not implemente")
+  def theId:String = null
+  def theName:String = null
 }

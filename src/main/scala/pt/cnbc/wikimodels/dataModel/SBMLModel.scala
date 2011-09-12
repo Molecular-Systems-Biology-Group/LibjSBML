@@ -71,17 +71,17 @@ case class SBMLModel() extends Element {
     this.setNotesFromXML(notes)
     this.id = id
     this.name = name
-    (new SBMLHandler).idExistsAndIsValid(this.id)    
+    SBMLHandler.idExistsAndIsValid(this.id)
   }
 
   /**
    * Constructor that extracts the information contained in the XML
    */
   def this(xmlModel: Elem) = {
-    this ((new SBMLHandler).toStringOrNull((xmlModel \ "@metaid").text),
-          (new SBMLHandler).checkCurrentLabelForNotes(xmlModel),
-          (new SBMLHandler).toStringOrNull((xmlModel \ "@id").text),
-          (new SBMLHandler).toStringOrNull((xmlModel \ "@name").text))
+    this (SBMLHandler.toStringOrNull((xmlModel \ "@metaid").text),
+          SBMLHandler.checkCurrentLabelForNotes(xmlModel),
+          SBMLHandler.toStringOrNull((xmlModel \ "@id").text),
+          SBMLHandler.toStringOrNull((xmlModel \ "@name").text))
     this.listOfFunctionDefinitions =
             (xmlModel \ "listOfFunctionDefinitions" \ "functionDefinition")
                     .map(i => new FunctionDefinition(i.asInstanceOf[scala.xml.Elem]))
@@ -115,7 +115,7 @@ case class SBMLModel() extends Element {
     <model metaid={metaid} id={id} name={name}>
       <!--order is important according to SBML Specifications-->
       {Console.println("Notes of the model are " + notes)}
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
       {if (listOfFunctionDefinitions != null && listOfFunctionDefinitions.size != 0)
         <listOfFunctionDefinitions>
           {listOfFunctionDefinitions.map(i => i.toXML)}

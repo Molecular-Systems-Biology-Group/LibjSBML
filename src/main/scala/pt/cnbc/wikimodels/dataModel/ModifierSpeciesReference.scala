@@ -41,23 +41,23 @@ case class ModifierSpeciesReference() extends Element {
     this.id = id
     this.name = name
     this.species = species
-    (new SBMLHandler).idExistsAndIsValid(this.id)
+    SBMLHandler.idExistsAndIsValid(this.id)
     if(this.species == null||this.species.trim == "")
       throw new BadFormatException("A Species id must be included in the creation of a new Speciesreference")
   }
 
   def this(xmlReaction: Elem) = {
-    this ((new SBMLHandler).toStringOrNull((xmlReaction \ "@metaid").text),
-          (new SBMLHandler).checkCurrentLabelForNotes(xmlReaction),
-          (new SBMLHandler).toStringOrNull((xmlReaction \ "@id").text),
-          (new SBMLHandler).toStringOrNull((xmlReaction \ "@name").text),
-          (new SBMLHandler).toStringOrNull((xmlReaction \ "@species").text))
+    this (SBMLHandler.toStringOrNull((xmlReaction \ "@metaid").text),
+          SBMLHandler.checkCurrentLabelForNotes(xmlReaction),
+          SBMLHandler.toStringOrNull((xmlReaction \ "@id").text),
+          SBMLHandler.toStringOrNull((xmlReaction \ "@name").text),
+          SBMLHandler.toStringOrNull((xmlReaction \ "@species").text))
   }
 
   override def toXML: Elem = {
     <modifierSpeciesReference metaid={metaid} id={id} name={name}
                               species={species}>
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
     </modifierSpeciesReference>
   }
 

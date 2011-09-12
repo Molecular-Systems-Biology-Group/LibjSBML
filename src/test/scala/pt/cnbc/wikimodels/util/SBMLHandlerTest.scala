@@ -224,10 +224,9 @@ class SBMLHandlerTest {
 
     @Test
     def libSBMLLoadingTest = {
-        //this test is not implementation independent but it is imporant for the correct functioning
+        //this test is not implementation independent but it is important for the correct functioning
         //of WikiModels.
-        //This is the reason such an implementation dependen
-        assertTrue( new SBMLHandler().validateSBML(example1, 2, 4))
+        assertTrue( new LibSBMLHandler().validateSBML(example1, 2, 4))
     }
 
 
@@ -249,7 +248,7 @@ class SBMLHandlerTest {
             </html>
                 </notes>
 
-        val spit = (new SBMLHandler().genNotesFromHTML(inNotes.toString))
+        val spit = (SBMLHandler.genNotesFromHTML(inNotes.toString))
 
 
         Console.println("Predicted notes = " + spit )
@@ -263,11 +262,11 @@ class SBMLHandlerTest {
 
     @Test
     def spitNullNotesTest =
-        assertEquals(new SBMLHandler().genNotesFromHTML(null), null)
+        assertEquals(SBMLHandler.genNotesFromHTML(null), null)
 
     @Test
     def spitEmptyStringNotesTest =
-        assertEquals(new SBMLHandler().genNotesFromHTML("  "), null)
+        assertEquals(SBMLHandler.genNotesFromHTML("  "), null)
 
 }
 

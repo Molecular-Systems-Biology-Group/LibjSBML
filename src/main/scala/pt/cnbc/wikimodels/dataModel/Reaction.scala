@@ -50,16 +50,16 @@ case class Reaction() extends Element{
     this.name = name
     this.reversible = reversible
     this.fast = fast
-    (new SBMLHandler).idExistsAndIsValid(this.id)
+    SBMLHandler.idExistsAndIsValid(this.id)
   }
 
   def this(xmlReaction:Elem) = {
-    this((new SBMLHandler).toStringOrNull((xmlReaction \ "@metaid").text),
-         (new SBMLHandler).checkCurrentLabelForNotes(xmlReaction),
-         (new SBMLHandler).toStringOrNull((xmlReaction \ "@id").text),
-         (new SBMLHandler).toStringOrNull((xmlReaction \ "@name").text),
-         (new SBMLHandler).convertStringToBool( (xmlReaction \ "@reversible").text, true ),
-         (new SBMLHandler).convertStringToBool( (xmlReaction \ "@fast").text, false ))
+    this(SBMLHandler.toStringOrNull((xmlReaction \ "@metaid").text),
+         SBMLHandler.checkCurrentLabelForNotes(xmlReaction),
+         SBMLHandler.toStringOrNull((xmlReaction \ "@id").text),
+         SBMLHandler.toStringOrNull((xmlReaction \ "@name").text),
+         SBMLHandler.convertStringToBool( (xmlReaction \ "@reversible").text, true ),
+         SBMLHandler.convertStringToBool( (xmlReaction \ "@fast").text, false ))
     this.listOfReactants =
       (xmlReaction \ "listOfReactants" \ "speciesReference")
       .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem]))
@@ -75,7 +75,7 @@ case class Reaction() extends Element{
 
   override def toXML:Elem = {
     <reaction metaid={metaid} id={id} name={name} >
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
       {if(listOfReactants != null && listOfReactants.size != 0)
         <listOfReactants>
           {listOfReactants.map(i => i.toXML)}

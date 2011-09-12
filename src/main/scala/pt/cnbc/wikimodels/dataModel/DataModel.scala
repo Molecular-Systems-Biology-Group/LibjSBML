@@ -19,6 +19,7 @@ import pt.cnbc.wikimodels.util.SBMLHandler
  * @author Alexandre Martins
  */
 trait DataModel extends RdfBean[DataModel]{
+  //TODO: this should probably be deleted
     /**
      * Converts this data model to xnl form
      */

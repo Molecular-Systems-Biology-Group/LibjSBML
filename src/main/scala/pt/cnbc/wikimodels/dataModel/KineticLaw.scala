@@ -30,12 +30,12 @@ case class KineticLaw() extends Element{
       this()
       this.metaid = metaid
       this.setNotesFromXML(notes)
-      this.math = new SBMLHandler().addNamespaceToMathML(math).toString
+      this.math = SBMLHandler.addNamespaceToMathML(math).toString
   }
 
   def this(xmlKineticLaw:Elem) = {
-      this((new SBMLHandler).toStringOrNull((xmlKineticLaw \ "@metaid").text),
-           (new SBMLHandler).checkCurrentLabelForNotes(xmlKineticLaw),
+      this(SBMLHandler.toStringOrNull((xmlKineticLaw \ "@metaid").text),
+           SBMLHandler.checkCurrentLabelForNotes(xmlKineticLaw),
            (xmlKineticLaw \ "math"))
       this.listOfParameters =
         (xmlKineticLaw \ "listOfParameters" \ "parameter")
@@ -47,7 +47,7 @@ case class KineticLaw() extends Element{
     Console.println("«KineticLaw math element is " + this.math)
     <kineticLaw metaid={metaid}>
       <!--order is important according to SBML Specifications-->
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
       {XML.loadString(this.math)}
       {if(listOfParameters != null && listOfParameters.size != 0)
         <listOfParameters>

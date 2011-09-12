@@ -15,17 +15,12 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 import xml._
 import pt.cnbc.wikimodels.sbml.namesspaces._
 
-object SBMLHandler {
-  var LibSBMLLoaded = false
-}
+class LibSBMLHandler {
 
-class SBMLHandler {
-
-  if (SBMLHandler.LibSBMLLoaded == false) {
+  if (LibSBMLHandler.LibSBMLLoaded == false) {
     LibSBMLLoader()
-    SBMLHandler.LibSBMLLoaded = true
+    LibSBMLHandler.LibSBMLLoaded = true
   }
-
   /**
    * This method should be run before any other method in this object
    * It olads the libSBML bindings for java.
@@ -68,6 +63,12 @@ class SBMLHandler {
         (sbmlDoc.checkConsistency == 0)) /* &&
                                            (sbmlDoc.checkInternalConsistency == 0)*/
   }
+}
+object LibSBMLHandler {
+  var LibSBMLLoaded = false
+}
+
+object SBMLHandler {
 
   /**
    * Produces the XML of the <notes section of any SBase

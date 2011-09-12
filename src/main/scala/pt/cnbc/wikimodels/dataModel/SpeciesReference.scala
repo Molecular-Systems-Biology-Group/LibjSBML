@@ -58,10 +58,10 @@ case class SpeciesReference() extends Element{
   }
 
   def this(xmlSpeciesRef:Elem) = {
-    this((new SBMLHandler).toStringOrNull((xmlSpeciesRef \ "@metaid").text),
-         (new SBMLHandler).checkCurrentLabelForNotes(xmlSpeciesRef),
-         (new SBMLHandler).toStringOrNull((xmlSpeciesRef \ "@id").text),
-         (new SBMLHandler).toStringOrNull((xmlSpeciesRef \ "@name").text),
+    this(SBMLHandler.toStringOrNull((xmlSpeciesRef \ "@metaid").text),
+         SBMLHandler.checkCurrentLabelForNotes(xmlSpeciesRef),
+         SBMLHandler.toStringOrNull((xmlSpeciesRef \ "@id").text),
+         SBMLHandler.toStringOrNull((xmlSpeciesRef \ "@name").text),
          (xmlSpeciesRef \ "@species").text,
          try{
           (xmlSpeciesRef \ "@stoichiometry").text.toDouble
@@ -85,7 +85,7 @@ case class SpeciesReference() extends Element{
         if(mathExists) null.asInstanceOf[String] else {this.stoichiometry.toString}
       }>
       <!--order is important according to SBML Specifications-->
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
       {if(mathExists){
           <stoichiometryMath>
             {XML.loadString(this.stoichiometryMath)}

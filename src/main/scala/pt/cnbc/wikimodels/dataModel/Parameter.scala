@@ -64,16 +64,16 @@ case class Parameter() extends Element {
     this.value = value
     this.units = units
     this.constant = constant
-    (new SBMLHandler).idExistsAndIsValid(this.id)
+    SBMLHandler.idExistsAndIsValid(this.id)
   }
 
   def this(xmlParameter: Elem) = {
-    this ((new SBMLHandler).toStringOrNull((xmlParameter \ "@metaid").text),
-      (new SBMLHandler).checkCurrentLabelForNotes(xmlParameter),
-      (new SBMLHandler).toStringOrNull((xmlParameter \ "@id").text),
-      (new SBMLHandler).toStringOrNull((xmlParameter \ "@name").text),
+    this (SBMLHandler.toStringOrNull((xmlParameter \ "@metaid").text),
+      SBMLHandler.checkCurrentLabelForNotes(xmlParameter),
+      SBMLHandler.toStringOrNull((xmlParameter \ "@id").text),
+      SBMLHandler.toStringOrNull((xmlParameter \ "@name").text),
       null,
-      (new SBMLHandler).toStringOrNull((xmlParameter \ "@units").text),
+      SBMLHandler.toStringOrNull((xmlParameter \ "@units").text),
       true
       )
     this.value = try {
@@ -81,13 +81,13 @@ case class Parameter() extends Element {
     } catch {
       case _ => null
     }
-    this.constant = (new SBMLHandler)
+    this.constant = SBMLHandler
             .convertStringToBool((xmlParameter \ "@constant").text, true)
   }
 
   override def toXML: Elem = {
     <parameter metaid={metaid} id={id} name={name} value={if (value == null) null.asInstanceOf[String] else {value.toString}} units={units} constant={constant.toString}>
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
     </parameter>
   }
 

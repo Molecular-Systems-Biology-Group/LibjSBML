@@ -43,20 +43,20 @@ case class FunctionDefinition() extends Element{
         this.id = id
         this.name = name
         this.math = math.toString
-      (new SBMLHandler).idExistsAndIsValid(this.id)
+      SBMLHandler.idExistsAndIsValid(this.id)
     }
 
     def this(xmlFunctionDefinition:Elem) = {
-        this((new SBMLHandler).toStringOrNull((xmlFunctionDefinition \ "@metaid").text),
-             (new SBMLHandler).checkCurrentLabelForNotes(xmlFunctionDefinition),
-             (new SBMLHandler).toStringOrNull((xmlFunctionDefinition \ "@id").text),
-             (new SBMLHandler).toStringOrNull((xmlFunctionDefinition \ "@name").text),
+        this(SBMLHandler.toStringOrNull((xmlFunctionDefinition \ "@metaid").text),
+             SBMLHandler.checkCurrentLabelForNotes(xmlFunctionDefinition),
+             SBMLHandler.toStringOrNull((xmlFunctionDefinition \ "@id").text),
+             SBMLHandler.toStringOrNull((xmlFunctionDefinition \ "@name").text),
              (xmlFunctionDefinition \ "math"))
     }
 
     override def toXML:Elem = {
         <functionDefinition metaid={this.metaid} id={id} name={name}>
-            {new SBMLHandler().genNotesFromHTML(notes)}
+            {SBMLHandler.genNotesFromHTML(notes)}
             {XML.loadString(this.math)}
         </functionDefinition>
     }

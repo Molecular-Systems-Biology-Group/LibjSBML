@@ -57,7 +57,7 @@ case class Compartment() extends Element {
     this.units = units
     this.outside = outside
     this.constant = constant
-    (new SBMLHandler).idExistsAndIsValid(this.id)
+    SBMLHandler.idExistsAndIsValid(this.id)
     if (this.spatialDimensions < 0 || spatialDimensions > 3)
       throw new BadFormatException("" + spatialDimensions + " is an invalid value for spatialDimensions");
     if (spatialDimensions == 0 && size != null)
@@ -69,10 +69,10 @@ case class Compartment() extends Element {
   }
 
   def this(xmlCompartment: Elem) = {
-    this ((new SBMLHandler).toStringOrNull((xmlCompartment \ "@metaid").text),
-      (new SBMLHandler).checkCurrentLabelForNotes(xmlCompartment),
-      (new SBMLHandler).toStringOrNull((xmlCompartment \ "@id").text),
-      (new SBMLHandler).toStringOrNull((xmlCompartment \ "@name").text),
+    this (SBMLHandler.toStringOrNull((xmlCompartment \ "@metaid").text),
+          SBMLHandler.checkCurrentLabelForNotes(xmlCompartment),
+          SBMLHandler.toStringOrNull((xmlCompartment \ "@id").text),
+          SBMLHandler.toStringOrNull((xmlCompartment \ "@name").text),
       try {
         (xmlCompartment \ "@compartmentType").text
       } catch {
@@ -88,8 +88,8 @@ case class Compartment() extends Element {
       } catch {
         case _ => null
       },
-      (new SBMLHandler).toStringOrNull((xmlCompartment \ "@units").text),
-      (new SBMLHandler).toStringOrNull((xmlCompartment \ "@outside").text),
+      SBMLHandler.toStringOrNull((xmlCompartment \ "@units").text),
+      SBMLHandler.toStringOrNull((xmlCompartment \ "@outside").text),
       try {
         (xmlCompartment \ "@constant").text.toBoolean
       } catch {
@@ -103,7 +103,7 @@ case class Compartment() extends Element {
                  spatialDimensions={spatialDimensions.toString}
                  size={size.toString} units={units} outside={outside}
                  constant={constant.toString}>
-      {new SBMLHandler().genNotesFromHTML(notes)}
+      {SBMLHandler.genNotesFromHTML(notes)}
     </compartment>
   }
 
