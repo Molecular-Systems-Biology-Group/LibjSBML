@@ -8,42 +8,80 @@
 
 package pt.cnbc.wikimodels.dataVisitors
 
-import pt.cnbc.wikimodels.dataModel._
+import javax.xml.validation.SchemaFactory
+import javax.xml.XMLConstants
+import javax.xml._
 import org.sbml.libsbml.SBMLReader
-import collection._
+import pt.cnbc.wikimodels.dataModel._
+import javax.xml.transform.stream.StreamSource
+import org.xml.sax.InputSource
+import pt.cnbc.wikimodels.util.SchemaAwareFactoryAdapter
+import java.io.{FileInputStream, File}
 
 
 class SBMLL2V4Validator {
+  def LibSBMLValidation(level:String, version:String, sbml:String):List[String] = {
+    //FIXME: This code could be simpler if avoiding calling toList was possible
+    val reader = new SBMLReader()
+    val sbmlDoc = reader.readSBMLFromString(sbml)
+
+    val indexSeq = for (errorNum <- Range(0, sbmlDoc.getNumErrors().toInt) )
+      yield {
+        val error = sbmlDoc.getError(errorNum.toLong)
+        error.getCategoryAsString + " " + error.getSeverityAsString + " at [" + error.getLine +
+          ","+ error.getColumn + "]: " + error.getMessage
+      }
+    indexSeq.toList
+  }
 
   /**
    * Checks errors related to general XML syntax
+   * Michael Hucka et al.
+   * Systems Biology Markup Language (SBML) Level 2:
+   * Structures and Facilities for Model Definitions. (2008).
+   * at <http://www.sbml.org/specifications/sbml-level-2/version-4/release-1/sbml-level-2-version-4-rel-1.pdf>
+   * on page 141
+   *
+   * NOTE: it is assumed that <?xml version="1.0" encoding="UTF-8"?> was removed.
+   * This must be valid UTF-8
    */
-  def generalXMLValidation(xml:String):List[String] = {
-    try{
+  def generalXMLValidation(level:String, version:String, xml:String):List[String] = {
+    //XML syntax
+
+    val xmlSyntaxErrors:Traversable[String] =try{
       scala.xml.XML.loadString(xml)
       Nil
     } catch {
       case e:  org.xml.sax.SAXParseException =>
         "XML ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage :: Nil
       case e =>
-        """An unexpected error occured. Please report this as a bug with the following stchtrace:" +
+        """UNEXPECTED ERROR: Please report this as a bug with the following stacktrace:" +
         """ + e.printStackTrace() :: Nil
     }
+
+
+    val schemaErrors = try{     //XML Schmea validation
+      // A schema can be loaded in like ...
+
+      val sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+      val s = sf.newSchema(new StreamSource(new File("foo.xsd")))
+      //Use our class:
+
+      val is = new InputSource(new FileInputStream("foo.xml"))
+      val xml = new SchemaAwareFactoryAdapter(s).loadXML(is)
+      Nil
+    } catch {
+      case e => "SBML_SCHEMA ERROR:" + e.getLocalizedMessage + "\n" + e.printStackTrace :: Nil
+    }
+
+    if(xmlSyntaxErrors.size > 0)
+      xmlSyntaxErrors.toList
+    else
+      schemaErrors
   }
 
-  def LibSBMLValidation(level:String, version:String, sbml:String):List[String] = {
-    //FIXME: This code could be simpler if avoiding calling toList was possible
-    val reader = new SBMLReader()
-    val sbmlDoc = reader.readSBMLFromString(sbml)
-    val indexSeqWithErrors:Traversable[String] =
-      for (errorNum <- Range(0, sbmlDoc.getNumErrors().toInt) )
-        yield {
-          val error = sbmlDoc.getError(errorNum.toLong)
-          error.getCategoryAsString + " " + error.getSeverityAsString + " at [" + error.getLine +
-            ","+ error.getColumn + "]: " + error.getMessage
-        }
-    indexSeqWithErrors.toList
-  }
+
+
 }
 
 
