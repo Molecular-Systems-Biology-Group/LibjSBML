@@ -15,8 +15,8 @@ import org.sbml.libsbml.SBMLReader
 import pt.cnbc.wikimodels.dataModel._
 import javax.xml.transform.stream.StreamSource
 import org.xml.sax.InputSource
-import pt.cnbc.wikimodels.util.SchemaAwareFactoryAdapter
 import java.io.{FileInputStream, File}
+import pt.cnbc.wikimodels.util.XSDAwareXML
 
 
 class SBMLL2V4Validator {
@@ -45,11 +45,11 @@ class SBMLL2V4Validator {
    * NOTE: it is assumed that <?xml version="1.0" encoding="UTF-8"?> was removed.
    * This must be valid UTF-8
    */
-  def generalXMLValidation(level:String, version:String, xml:String):List[String] = {
+  def generalXMLValidation(level:String, version:String, xmlStr:String):List[String] = {
     //XML syntax
 
     val xmlSyntaxErrors:Traversable[String] =try{
-      scala.xml.XML.loadString(xml)
+      scala.xml.XML.loadString(xmlStr)
       Nil
     } catch {
       case e:  org.xml.sax.SAXParseException =>
@@ -64,11 +64,10 @@ class SBMLL2V4Validator {
       // A schema can be loaded in like ...
 
       val sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-      val s = sf.newSchema(new StreamSource(new File("foo.xsd")))
+      val s = sf.newSchema(new StreamSource(new File("sbml-l2v4.xsd")))
       //Use our class:
 
-      val is = new InputSource(new FileInputStream("foo.xml"))
-      val xml = new SchemaAwareFactoryAdapter(s).loadXML(is)
+      val xmlElem = XSDAwareXML(s).loadString(xmlStr)
       Nil
     } catch {
       case e => "SBML_SCHEMA ERROR:" + e.getLocalizedMessage + "\n" + e.printStackTrace :: Nil
