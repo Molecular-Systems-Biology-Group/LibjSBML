@@ -19,8 +19,8 @@ import java.io.{FileInputStream, File}
 import pt.cnbc.wikimodels.util.XSDAwareXML
 
 
-class SBMLL2V4Validator {
-  def LibSBMLValidation(level:String, version:String, sbml:String):List[String] = {
+object SBMLValidator {
+  def LibSBMLValidation(level:Int, version:Int, sbml:String):List[String] = {
     //FIXME: This code could be simpler if avoiding calling toList was possible
     val reader = new SBMLReader()
     val sbmlDoc = reader.readSBMLFromString(sbml)
@@ -45,7 +45,7 @@ class SBMLL2V4Validator {
    * NOTE: it is assumed that <?xml version="1.0" encoding="UTF-8"?> was removed.
    * This must be valid UTF-8
    */
-  def generalXMLValidation(level:String, version:String, xmlStr:String):List[String] = {
+  def generalXMLValidation(level:Int, version:Int, xmlStr:String):List[String] = {
     //XML syntax
 
     val xmlSyntaxErrors:Traversable[String] =try{
@@ -64,7 +64,7 @@ class SBMLL2V4Validator {
       // A schema can be loaded in like ...
 
       val sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-      val s = sf.newSchema(new StreamSource(new File("sbml-l2v4.xsd")))
+      val s = sf.newSchema(this.getClass.getClassLoader.getResource("sbml-l"+level+"v"+version+".xsd"))
       //Use our class:
 
       val xmlElem = XSDAwareXML(s).loadString(xmlStr)
@@ -78,13 +78,7 @@ class SBMLL2V4Validator {
     else
       schemaErrors
   }
-
-
-
 }
-
-
-
 
 class SBMLElemValidator(val elem:Element) {
   import pt.cnbc.wikimodels.exceptions.BadFormatException
