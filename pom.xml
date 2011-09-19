@@ -1,5 +1,5 @@
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>pt.cnbc.wikimodels</groupId>
     <artifactId>wm_libjsbml</artifactId>
@@ -15,14 +15,14 @@
     </parent>
 
     <properties>
-      <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
-      <!-- TODO: This is only here because of an SBT problem when using a submodule that uses variables from the POM of the main project. 
-      To reproduce it delete the following var declarations and execute the following commands:
-      cd ../wm_web_client/
-      sbt update
-      -->
-      <jena.version>2.6.2</jena.version>
-      <sdb.version>1.3.1</sdb.version>
+        <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
+        <!-- TODO: This is only here because of an SBT problem when using a submodule that uses variables from the POM of the main project.
+        To reproduce it delete the following var declarations and execute the following commands:
+        cd ../wm_web_client/
+        sbt update
+        -->
+        <jena.version>2.6.2</jena.version>
+        <sdb.version>1.3.1</sdb.version>
     </properties>
 
     <repositories>
@@ -36,16 +36,6 @@
             <name>Java.net Repository for Maven</name>
             <url>http://download.java.net/maven/2/</url>
             <layout>default</layout>
-        </repository>
-        <repository><!-- for compilation within the module -->
-            <id>localMavenRepo5</id>
-            <name>localMavenRepo5</name>
-            <url>file:${basedir}/../localMavenRepo</url>
-        </repository>
-        <repository><!-- for compilation from the main project -->
-            <id>localMavenRepo6</id>
-            <name>localMavenRepo6</name>
-            <url>file:${basedir}/localMavenRepo</url>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -103,12 +93,17 @@
             <artifactId>libsbmlj</artifactId>
             <version>3.4</version>
         </dependency>
-        <!-- TODO lets call Lift-common Box from java -->
-          <dependency>
-              <groupId>net.liftweb</groupId>
-              <artifactId>lift-common_${scala.version}</artifactId>
-              <version>${lift.version}</version>
-          </dependency>
+        <dependency>
+            <groupId>net.liftweb</groupId>
+            <artifactId>lift-common_${scala.version}</artifactId>
+            <version>${lift.version}</version>
+        </dependency>
+        <!-- TODO: delete in production. This only serves to put sources in Intellij IDEA -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.7.1</version>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
