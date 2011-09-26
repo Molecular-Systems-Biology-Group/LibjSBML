@@ -129,6 +129,6 @@ class XSDAwareXMLTest {
   def checkgeneralXMLValidation = {
     val is =       this.getClass.getClassLoader.getResourceAsStream("BIOMD0000000070.xml")
     val sbmlString:String = scala.io.Source.fromInputStream(is).getLines().mkString("\n")
-    assertEquals(Nil, SBMLValidator.generalXMLValidation( 2 ,4,sbmlString) )
+    assertEquals(Nil, SBMLValidator.sbmlSchemaValidation( 2 ,4,sbmlString) )
   }
 }

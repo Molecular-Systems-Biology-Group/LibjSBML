@@ -17,6 +17,7 @@ import javax.xml.transform.stream.StreamSource
 import org.xml.sax.InputSource
 import java.io.{FileInputStream, File}
 import pt.cnbc.wikimodels.util.XSDAwareXML
+import pt.cnbc.wikimodels.exceptions.ValidationDefaultCase._
 
 
 object SBMLValidator {
@@ -34,6 +35,8 @@ object SBMLValidator {
     indexSeq.toList
   }
 
+  //### General XML validation  ###
+
   /**
    * Checks errors related to general XML syntax
    * Michael Hucka et al.
@@ -45,22 +48,23 @@ object SBMLValidator {
    * NOTE: it is assumed that <?xml version="1.0" encoding="UTF-8"?> was removed.
    * This must be valid UTF-8
    */
-  def generalXMLValidation(level:Int, version:Int, xmlStr:String):List[String] = {
+  def xmlSyntaxValidation(level:Int, version:Int, xmlStr:String):List[String] = {
     //XML syntax
 
-    val xmlSyntaxErrors:Traversable[String] =try{
+    try{
       scala.xml.XML.loadString(xmlStr)
       Nil
     } catch {
       case e:  org.xml.sax.SAXParseException =>
         "XML ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage :: Nil
-      case e =>
-        """UNEXPECTED ERROR: Please report this as a bug with the following stacktrace:" +
-        """ + e.printStackTrace() :: Nil
+      case e => exceptionHandling(e)
     }
+  }
+
+  def sbmlSchemaValidation(level:Int, version:Int, xmlStr:String):List[String] = {
 
 
-    val schemaErrors = try{     //XML Schmea validation
+    try{     //XML Schmea validation
       // A schema can be loaded in like ...
 
       val sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
@@ -70,13 +74,11 @@ object SBMLValidator {
       val xmlElem = XSDAwareXML(s).loadString(xmlStr)
       Nil
     } catch {
-      case e => "SBML_SCHEMA ERROR:" + e.getLocalizedMessage + "\n" + e.printStackTrace :: Nil
+      case e:org.xml.sax.SAXParseException =>{
+        "SBML_SCHEMA ERROR:" + e.getLocalizedMessage + "\n" + e.printStackTrace :: Nil
+      }
+      case e => exceptionHandling(e)
     }
-
-    if(xmlSyntaxErrors.size > 0)
-      xmlSyntaxErrors.toList
-    else
-      schemaErrors
   }
 }
 
