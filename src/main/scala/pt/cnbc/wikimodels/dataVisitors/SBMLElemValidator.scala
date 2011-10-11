@@ -82,7 +82,7 @@ object SBMLValidator {
   }
 }
 
-class SBMLElemValidator(val elem:Element) {
+class SBMLStrictValidator(val elem:Element)  {
   import pt.cnbc.wikimodels.exceptions.BadFormatException
 
   /**
@@ -126,12 +126,49 @@ class SBMLElemValidator(val elem:Element) {
   }
 }
 
+/**
+ * class that checks if all metaids of a an element are valid.
+ * The rules are:
+ *  - no metaId should be repeated across the entire knowledgebase
+ *  - if metaId does not exist for a certain element it should be created from the id
+ */
+class SBMLElemCheckMetaId(val elem: Element) extends SBMLBeanVisitor[Boolean] {
+  import pt.cnbc.wikimodels.exceptions.BadFormatException
 
-object SBMLElemValidator{
+  def visit(e:Element):Boolean = e match {
+    case cp:Compartment => visitCompartment(cp)
+    case ct:Constraint => visitConstraint(ct)
+    case fd:FunctionDefinition => visitFunctionDefinition(fd)
+    case kl:KineticLaw => visitKineticLaw(kl)
+    case msr:ModifierSpeciesReference => visitModifierSpeciesReference(msr)
+    case p:Parameter => visitParameter(p)
+    case r:Reaction => visitReaction(r)
+    case m:SBMLModel => visitModel(m)
+    case s:Species => visitSpecies(s)
+    case sr:SpeciesReference => visitSpeciesReference(sr)
+    case _ => throw new BadFormatException("Unknow element inside SBMLModel when checking for metaids")
+  }
 
-  implicit def SBMLToSBMLValidator(elem:Element ) = new SBMLElemValidator(elem)
+  def visitModel(m: SBMLModel): Boolean = false
+
+  def visitCompartment(c: Compartment): Boolean = false
+
+  def visitConstraint(ct: Constraint): Boolean = false
+
+  def visitFunctionDefinition(fd: FunctionDefinition): Boolean = false
+
+  def visitKineticLaw(kl: KineticLaw): Boolean = false
+
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): Boolean = false
+
+  def visitParameter(p: Parameter): Boolean = false
+
+  def visitReaction(r: Reaction): Boolean = false
+
+  def visitSpecies(s: Species): Boolean = false
+
+  def visitSpeciesReference(sr: SpeciesReference): Boolean = false
 }
-
 
 /**
  * class that checks if all metaids of a an element are valid.
@@ -139,56 +176,41 @@ object SBMLElemValidator{
  *  - no metaId should be repeated across the entire knowledgebase
  *  - if metaId does not exist for a certain element it should be created from the id
  */
-class SBMLElemCheckMetaId(val elem: Element) {
+class SBMLElemCheckId(val elem:Element) extends SBMLBeanVisitor[Boolean] {
   import pt.cnbc.wikimodels.exceptions.BadFormatException
 
-  def checkMetaId = {
-    elem match {
-      case cp: Compartment => cp
-      case ct: Constraint => true
-      case fd: FunctionDefinition => true
-      case kl: KineticLaw => true
-      case msr: ModifierSpeciesReference => true
-      case p: Parameter => true
-      case r: Reaction => true
-      case m: SBMLModel => true
-      case s: Species => true
-      case sr: SpeciesReference => true
-      case _ => {
-        throw new BadFormatException("Unknow element inside SBMLModel when checking for metaids")
-        elem
-      }
-    }
+  def visit(e:Element):Boolean = e match {
+    case cp:Compartment => visitCompartment(cp)
+    case ct:Constraint => visitConstraint(ct)
+    case fd:FunctionDefinition => visitFunctionDefinition(fd)
+    case kl:KineticLaw => visitKineticLaw(kl)
+    case msr:ModifierSpeciesReference => visitModifierSpeciesReference(msr)
+    case p:Parameter => visitParameter(p)
+    case r:Reaction => visitReaction(r)
+    case m:SBMLModel => visitModel(m)
+    case s:Species => visitSpecies(s)
+    case sr:SpeciesReference => visitSpeciesReference(sr)
+    case _ => throw new BadFormatException("Unknow element inside SBMLModel when checking for metaids")
   }
-}
-
-/**
- * class that checks if all metaids of a an element are valid.
- * The rules are:
- *  - no metaId should be repeated across the entire knowledgebase
- *  - if metaId does not exist for a certain element it should be created from the id
- */
-class SBMLElemCheckId(val elem:Element) {
-  import pt.cnbc.wikimodels.exceptions.BadFormatException
-
-  def checkId = {
-    elem match  {
-      case cp:Compartment => cp
-      case ct:Constraint => true
-      case fd:FunctionDefinition => true
-      case kl:KineticLaw => true
-      case msr:ModifierSpeciesReference => true
-      case p:Parameter => true
-      case r:Reaction => true
-      case m:SBMLModel => true
-      case s:Species => true
-      case sr:SpeciesReference => true
-      case _ => {
-          throw new BadFormatException("Unknow element inside SBMLModel when checking for metaids")
-          elem
-        }
-    }
 
 
-  }
+  def visitModel(m: SBMLModel): Boolean = false
+
+  def visitCompartment(m: Compartment): Boolean = false
+
+  def visitConstraint(m: Constraint): Boolean = false
+
+  def visitFunctionDefinition(m: FunctionDefinition): Boolean = false
+
+  def visitKineticLaw(m: KineticLaw): Boolean = false
+
+  def visitModifierSpeciesReference(m: ModifierSpeciesReference): Boolean = false
+
+  def visitParameter(m: Parameter): Boolean = false
+
+  def visitReaction(m: Reaction): Boolean = false
+
+  def visitSpecies(m: Species): Boolean = false
+
+  def visitSpeciesReference(m: SpeciesReference): Boolean = false
 }

@@ -43,19 +43,6 @@ abstract class Element extends DataModel{
       this.notes = Group(SBMLHandler.addNamespaceToXHTML(notes)).toString()
   }
 
-  def this(xmlModel:Elem) = {
-      this()
-      this.metaid = (xmlModel \ "@metaid").text
-      this.setNotesFromXML(xmlModel \ "notes")
-      //metaid stays mandatory for now
-      if(metaid == null){
-          //Note: It might be deleted from here to make the data model
-          //Note: independent from the data validation -> we 'll see.
-          throw new BadFormatException(
-              "Element constructor should never receive a null metaid.")
-      }
-  }
-
   override def toXML:Elem =
   throw new pt.cnbc.wikimodels.exceptions
   .NotImplementedException("toXML in class " + this.getClass +

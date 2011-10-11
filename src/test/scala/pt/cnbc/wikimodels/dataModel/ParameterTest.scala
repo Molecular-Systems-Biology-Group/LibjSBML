@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.Assert._
 import pt.cnbc.wikimodels.exceptions.BadFormatException
+import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
 
 class ParameterTest{
 
@@ -63,7 +64,7 @@ class ParameterTest{
                                   "any_id", "any_name")
         Console.println("XML representation of the model is "
                         + param.toXML.toString)
-        val param2 = new SBMLModel(param.toXML)
+        val param2 = SBML2BeanConverter.visitModel(param.toXML)
         Console.println("XML representation of the reound tripped model is "
                         + param2.toXML.toString)
         assertTrue(param == param2 )
@@ -76,7 +77,7 @@ class ParameterTest{
                                   "any_id", "any_name")
         Console.println("XML representation of the model is "
                         + param.toXML.toString)
-        val param2 = new SBMLModel(param.toXML)
+        val param2 = SBML2BeanConverter.visitModel(param.toXML)
         Console.println("XML representation of the reound tripped model is "
                         + param2.toXML.toString)
         assertTrue(param == param2 )
@@ -88,7 +89,7 @@ class ParameterTest{
                                  null, "any_name", 0.2, null, true)
         Console.println("XML representation of the model is "
                         + param.toXML.toString)
-        val param2 = new Parameter(param.toXML)
+        val param2 = SBML2BeanConverter.visitParameter(param.toXML)
         Console.println("XML representation of the reound tripped model is "
                         + param2.toXML.toString)
     }
@@ -99,7 +100,7 @@ class ParameterTest{
                                  "any_id", null)
         Console.println("XML representation of the model is "
                         + param.toXML.toString)
-        val param2 = new SBMLModel(param.toXML)
+        val param2 = SBML2BeanConverter.visitModel(param.toXML)
         Console.println("XML representation of the reound tripped model is "
                         + param2.toXML.toString)
         assertTrue(param == param2 )

@@ -57,25 +57,6 @@ case class SpeciesReference() extends Element{
       throw new BadFormatException("A value should be issued to Stoichiometry or stoichiometryMath. Neither has it")
   }
 
-  def this(xmlSpeciesRef:Elem) = {
-    this(SBMLHandler.toStringOrNull((xmlSpeciesRef \ "@metaid").text),
-         SBMLHandler.checkCurrentLabelForNotes(xmlSpeciesRef),
-         SBMLHandler.toStringOrNull((xmlSpeciesRef \ "@id").text),
-         SBMLHandler.toStringOrNull((xmlSpeciesRef \ "@name").text),
-         (xmlSpeciesRef \ "@species").text,
-         try{
-          (xmlSpeciesRef \ "@stoichiometry").text.toDouble
-         } catch {case _ => 1 },
-         (xmlSpeciesRef \ "stoichiometryMath" \ "math"))
-    //if there is a stoichiometryMath 
-    if( (xmlSpeciesRef \ "@speciesReference" \ "stoichiometryMath" ).size == 0 ){
-      if(this.stoichiometry == null)
-        this.stoichiometry = 1
-    } else {
-      this.stoichiometry = null
-    }
-  }
-
   override def toXML:Elem = {
     val mathExists = this.stoichiometryMath.size > 0
     

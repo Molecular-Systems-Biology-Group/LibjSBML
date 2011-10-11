@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.Assert._
 import pt.cnbc.wikimodels.exceptions.BadFormatException
+import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
 
 class SBMLModelTest {
   val model1 =
@@ -217,7 +218,7 @@ class SBMLModelTest {
       "any_id", "any_name")
     /*Console.println("XML representation of the model is "
    + sbml.toXML.toString)*/
-    val sbml2 = new SBMLModel(sbml.toXML)
+    val sbml2 = SBML2BeanConverter.visitModel(sbml.toXML)
     /*Console.println("XML representation of the reound tripped model is "
    + sbml2.toXML.toString)*/
 
@@ -232,7 +233,7 @@ class SBMLModelTest {
       "any_id", "any_name")
     Console.println("XML representation of the model is "
             + sbml.toXML.toString)
-    val sbml2 = new SBMLModel(sbml.toXML)
+    val sbml2 = SBML2BeanConverter.visitModel(sbml.toXML)
     Console.println("XML representation of the reound tripped model is "
             + sbml2.toXML.toString)
     assertTrue(sbml == sbml2)
@@ -260,7 +261,7 @@ class SBMLModelTest {
       null, "any_name")
     Console.println("XML representation of the model is "
             + sbml.toXML.toString)
-    val sbml2 = new SBMLModel(sbml.toXML)
+    val sbml2 = SBML2BeanConverter.visitModel(sbml.toXML)
     Console.println("XML representation of the reound tripped model is "
             + sbml2.toXML.toString)
     assertTrue(sbml == sbml2)
@@ -272,7 +273,7 @@ class SBMLModelTest {
       "any_id", null)
     Console.println("XML representation of the model is "
             + sbml.toXML.toString)
-    val sbml2 = new SBMLModel(sbml.toXML)
+    val sbml2 = SBML2BeanConverter.visitModel(sbml.toXML)
     Console.println("XML representation of the reound tripped model is "
             + sbml2.toXML.toString)
     assertTrue(sbml == sbml2)
@@ -287,10 +288,10 @@ class SBMLModelTest {
           <parameter id="transcriptionDelay2" value="102" units="time"/>
       </listOfParameters>
     </model>
-    val modelWParamenters = new SBMLModel(xmlModelWithParameters)
+    val modelWParamenters = SBML2BeanConverter.visitModel(xmlModelWithParameters)
     val model = new SBMLModel()
     val lParamSize = (modelWParamenters.toXML \ "listOfParameters" \ "parameter")
-            .map(i => new pt.cnbc.wikimodels.dataModel.Parameter(i.asInstanceOf[scala.xml.Elem])).size
+            .map(i => SBML2BeanConverter.visitParameter(i.asInstanceOf[scala.xml.Elem])).size
 
     assertEquals(lParamSize, 2)
   }

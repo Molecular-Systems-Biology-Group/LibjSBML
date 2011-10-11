@@ -43,18 +43,6 @@ case class Constraint() extends Element {
     SBMLHandler.idExistsAndIsValid(this.id)
   }
 
-  /**
-   * math element is mandatory
-   */
-  def this(xmlConstraint: Elem) = {
-    this (SBMLHandler.toStringOrNull((xmlConstraint \ "@metaid").text),
-      SBMLHandler.checkCurrentLabelForNotes(xmlConstraint),
-      SBMLHandler.toStringOrNull((xmlConstraint \ "@id").text),
-      SBMLHandler.toStringOrNull((xmlConstraint \ "@name").text),
-      (xmlConstraint \ "math"),
-      SBMLHandler.checkCurrentLabelForMessage(xmlConstraint))
-  }
-
   override def toXML: Elem = {
     <constraint metaid={metaid} id={id} name={name}>
       <!--order is important according to SBML Specifications-->

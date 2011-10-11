@@ -46,14 +46,6 @@ case class FunctionDefinition() extends Element{
       SBMLHandler.idExistsAndIsValid(this.id)
     }
 
-    def this(xmlFunctionDefinition:Elem) = {
-        this(SBMLHandler.toStringOrNull((xmlFunctionDefinition \ "@metaid").text),
-             SBMLHandler.checkCurrentLabelForNotes(xmlFunctionDefinition),
-             SBMLHandler.toStringOrNull((xmlFunctionDefinition \ "@id").text),
-             SBMLHandler.toStringOrNull((xmlFunctionDefinition \ "@name").text),
-             (xmlFunctionDefinition \ "math"))
-    }
-
     override def toXML:Elem = {
         <functionDefinition metaid={this.metaid} id={id} name={name}>
             {SBMLHandler.genNotesFromHTML(notes)}

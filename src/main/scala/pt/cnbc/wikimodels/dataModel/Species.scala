@@ -67,41 +67,6 @@ case class Species() extends Element{
       SBMLHandler.idExistsAndIsValid(this.id)
     }
 
-    def this(xmlSpecies:Elem) = {
-        this(SBMLHandler.toStringOrNull((xmlSpecies \ "@metaid").text),
-             SBMLHandler.checkCurrentLabelForNotes(xmlSpecies),
-             SBMLHandler.toStringOrNull((xmlSpecies \ "@id").text),
-             SBMLHandler.toStringOrNull((xmlSpecies \ "@name").text),
-             SBMLHandler.toStringOrNull((xmlSpecies \ "@speciesType").text),
-             SBMLHandler.toStringOrNull((xmlSpecies \ "@compartment").text),
-             try{
-                java.lang.Double.parseDouble( (xmlSpecies \ "@initialAmount").text )
-            } catch {
-                case _ => null
-            },
-             try{
-                java.lang.Double.parseDouble( (xmlSpecies \ "@initialConcentration").text )
-            } catch {
-                case _ => null
-            },
-             SBMLHandler.toStringOrNull((xmlSpecies \ "@substanceUnits").text),
-             try{
-              (xmlSpecies \ "@hasOnlySubstanceUnits").text.toBoolean
-             } catch {
-              case _ => false
-             },
-             try{
-              (xmlSpecies \ "@boundaryCondition").text.toBoolean
-             } catch {
-              case _ => false
-             },
-             try{
-              (xmlSpecies \ "@constant").text.toBoolean
-                           } catch {
-               case _ => false
-             })
-    }
-
     override def toXML:Elem = {
         <species metaid={metaid} id={id} name={name} 
             speciesType={speciesType} compartment={compartment}

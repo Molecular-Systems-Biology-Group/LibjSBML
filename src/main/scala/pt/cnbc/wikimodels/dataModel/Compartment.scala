@@ -68,35 +68,6 @@ case class Compartment() extends Element {
       throw new BadFormatException("size should have a positive value");
   }
 
-  def this(xmlCompartment: Elem) = {
-    this (SBMLHandler.toStringOrNull((xmlCompartment \ "@metaid").text),
-          SBMLHandler.checkCurrentLabelForNotes(xmlCompartment),
-          SBMLHandler.toStringOrNull((xmlCompartment \ "@id").text),
-          SBMLHandler.toStringOrNull((xmlCompartment \ "@name").text),
-      try {
-        (xmlCompartment \ "@compartmentType").text
-      } catch {
-        case _ => null
-      },
-      try {
-        (xmlCompartment \ "@spatialDimensions").text.toInt
-      } catch {
-        case _ => 3
-      },
-      try {
-        (xmlCompartment \ "@size").text.toDouble
-      } catch {
-        case _ => null
-      },
-      SBMLHandler.toStringOrNull((xmlCompartment \ "@units").text),
-      SBMLHandler.toStringOrNull((xmlCompartment \ "@outside").text),
-      try {
-        (xmlCompartment \ "@constant").text.toBoolean
-      } catch {
-        case _ => true
-      })
-  }
-
   override def toXML: Elem = {
     <compartment metaid={metaid} id={id} name={name}
                  compartmentType={compartmentType}

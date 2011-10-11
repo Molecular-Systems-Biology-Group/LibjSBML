@@ -46,14 +46,6 @@ case class ModifierSpeciesReference() extends Element {
       throw new BadFormatException("A Species id must be included in the creation of a new Speciesreference")
   }
 
-  def this(xmlReaction: Elem) = {
-    this (SBMLHandler.toStringOrNull((xmlReaction \ "@metaid").text),
-          SBMLHandler.checkCurrentLabelForNotes(xmlReaction),
-          SBMLHandler.toStringOrNull((xmlReaction \ "@id").text),
-          SBMLHandler.toStringOrNull((xmlReaction \ "@name").text),
-          SBMLHandler.toStringOrNull((xmlReaction \ "@species").text))
-  }
-
   override def toXML: Elem = {
     <modifierSpeciesReference metaid={metaid} id={id} name={name}
                               species={species}>

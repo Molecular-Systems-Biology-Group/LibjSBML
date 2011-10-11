@@ -75,34 +75,6 @@ case class SBMLModel() extends Element {
   }
 
   /**
-   * Constructor that extracts the information contained in the XML
-   */
-  def this(xmlModel: Elem) = {
-    this (SBMLHandler.toStringOrNull((xmlModel \ "@metaid").text),
-          SBMLHandler.checkCurrentLabelForNotes(xmlModel),
-          SBMLHandler.toStringOrNull((xmlModel \ "@id").text),
-          SBMLHandler.toStringOrNull((xmlModel \ "@name").text))
-    this.listOfFunctionDefinitions =
-            (xmlModel \ "listOfFunctionDefinitions" \ "functionDefinition")
-                    .map(i => new FunctionDefinition(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfCompartments =
-            (xmlModel \ "listOfCompartments" \ "compartment")
-                    .map(i => new Compartment(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfSpecies =
-            (xmlModel \ "listOfSpecies" \ "species")
-                    .map(i => new Species(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfParameters =
-            (xmlModel \ "listOfParameters" \ "parameter")
-                    .map(i => new Parameter(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfConstraints =
-            (xmlModel \ "listOfConstraints" \ "constraint")
-                    .map(i => new Constraint(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfReactions =
-            (xmlModel \ "listOfReactions" \ "reaction")
-                    .map(i => new Reaction(i.asInstanceOf[scala.xml.Elem]))
-  }
-
-  /**
    * generates a XML representation of the SBML Model
    * it does not include the DOCTYPE declaration or the sbml top tag
    * Those should be added by a proper export funtion when it is created

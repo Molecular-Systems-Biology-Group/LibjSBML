@@ -53,26 +53,6 @@ case class Reaction() extends Element{
     SBMLHandler.idExistsAndIsValid(this.id)
   }
 
-  def this(xmlReaction:Elem) = {
-    this(SBMLHandler.toStringOrNull((xmlReaction \ "@metaid").text),
-         SBMLHandler.checkCurrentLabelForNotes(xmlReaction),
-         SBMLHandler.toStringOrNull((xmlReaction \ "@id").text),
-         SBMLHandler.toStringOrNull((xmlReaction \ "@name").text),
-         SBMLHandler.convertStringToBool( (xmlReaction \ "@reversible").text, true ),
-         SBMLHandler.convertStringToBool( (xmlReaction \ "@fast").text, false ))
-    this.listOfReactants =
-      (xmlReaction \ "listOfReactants" \ "speciesReference")
-      .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfProducts =
-      (xmlReaction \ "listOfProducts" \ "speciesReference")
-      .map(i => new SpeciesReference(i.asInstanceOf[scala.xml.Elem]))
-    this.listOfModifiers =
-      (xmlReaction \ "listOfModifiers" \ "modifierSpeciesReference")
-      .map(i => new ModifierSpeciesReference(i.asInstanceOf[scala.xml.Elem]))
-    if( (xmlReaction \ "kineticLaw").length > 0 )
-        this.kineticLaw = new KineticLaw((xmlReaction \ "kineticLaw").head.asInstanceOf[scala.xml.Elem])
-  }
-
   override def toXML:Elem = {
     <reaction metaid={metaid} id={id} name={name} >
       {SBMLHandler.genNotesFromHTML(notes)}

@@ -11,6 +11,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert._
+import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
 
 class KineticLawTest{
   val kineticLaw =
@@ -75,7 +76,7 @@ class KineticLawTest{
          mathml  )
     Console.println("XML representation of the model is "
                     + kl.toXML.toString)
-    val kl2 = new KineticLaw(kl.toXML)
+    val kl2 = SBML2BeanConverter.visitKineticLaw(kl.toXML)
     Console.println("XML representation of the reound tripped model is "
                     + kl2.toXML.toString)
     assertTrue(true )
@@ -87,7 +88,7 @@ class KineticLawTest{
            mathml  )
       Console.println("XML representation of the model is "
                       + kl.toXML.toString)
-      val kl2 = new KineticLaw(kl.toXML)
+      val kl2 = SBML2BeanConverter.visitKineticLaw(kl.toXML)
       Console.println("XML representation of the reound tripped model is "
                       + kl2.toXML.toString)
       assertTrue(true )

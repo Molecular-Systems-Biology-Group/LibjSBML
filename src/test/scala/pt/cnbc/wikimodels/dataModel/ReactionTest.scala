@@ -10,6 +10,7 @@ package pt.cnbc.wikimodels.dataModel
 
 import org.junit._
 import Assert._
+import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
 
 class ReactionTest {
 
@@ -48,7 +49,7 @@ class ReactionTest {
 
   @Test
   def roundTripKineticLaw = {
-    val react = new Reaction(reaction1)
+    val react = SBML2BeanConverter.visitReaction(reaction1)
     val reactXML = react.toXML
 
     //check local parameter list
@@ -57,7 +58,7 @@ class ReactionTest {
     }
   @Test
   def roundTripPArametersInKineticLaw = {
-    val react = new Reaction(reaction1)
+    val react = SBML2BeanConverter.visitReaction(reaction1)
     val reactXML = react.toXML
 
     //check local parameter list
@@ -67,7 +68,7 @@ class ReactionTest {
 
   @Test
   def roundTripMathInKineticLaw = {
-    val react = new Reaction(reaction1)
+    val react = SBML2BeanConverter.visitReaction(reaction1)
     val reactXML = react.toXML
 
     //check local math

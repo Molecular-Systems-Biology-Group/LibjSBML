@@ -33,16 +33,6 @@ case class KineticLaw() extends Element{
       this.math = SBMLHandler.addNamespaceToMathML(math).toString
   }
 
-  def this(xmlKineticLaw:Elem) = {
-      this(SBMLHandler.toStringOrNull((xmlKineticLaw \ "@metaid").text),
-           SBMLHandler.checkCurrentLabelForNotes(xmlKineticLaw),
-           (xmlKineticLaw \ "math"))
-      this.listOfParameters =
-        (xmlKineticLaw \ "listOfParameters" \ "parameter")
-        .map(i => new Parameter(i.asInstanceOf[scala.xml.Elem]))
-
-  }
-
   override def toXML:Elem = {
     Console.println("«KineticLaw math element is " + this.math)
     <kineticLaw metaid={metaid}>

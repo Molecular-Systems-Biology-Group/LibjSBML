@@ -67,24 +67,6 @@ case class Parameter() extends Element {
     SBMLHandler.idExistsAndIsValid(this.id)
   }
 
-  def this(xmlParameter: Elem) = {
-    this (SBMLHandler.toStringOrNull((xmlParameter \ "@metaid").text),
-      SBMLHandler.checkCurrentLabelForNotes(xmlParameter),
-      SBMLHandler.toStringOrNull((xmlParameter \ "@id").text),
-      SBMLHandler.toStringOrNull((xmlParameter \ "@name").text),
-      null,
-      SBMLHandler.toStringOrNull((xmlParameter \ "@units").text),
-      true
-      )
-    this.value = try {
-      java.lang.Double.parseDouble((xmlParameter \ "@value").text)
-    } catch {
-      case _ => null
-    }
-    this.constant = SBMLHandler
-            .convertStringToBool((xmlParameter \ "@constant").text, true)
-  }
-
   override def toXML: Elem = {
     <parameter metaid={metaid} id={id} name={name} value={if (value == null) null.asInstanceOf[String] else {value.toString}} units={units} constant={constant.toString}>
       {SBMLHandler.genNotesFromHTML(notes)}
