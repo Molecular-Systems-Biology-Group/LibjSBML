@@ -5,6 +5,7 @@
 package pt.cnbc.wikimodels.dataVisitors
 
 import pt.cnbc.wikimodels.dataModel._
+import xml.Elem
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,4 +27,30 @@ trait SBMLBeanVisitor[T] {
   def visitReaction(r:Reaction):T
   def visitSpecies(s:Species):T
   def visitSpeciesReference(sr:SpeciesReference):T
+}
+
+class Bean2SBMLVisitor extends SBMLBeanVisitor[Elem] {
+  //TODO replace _.toXML with this visitor in the code
+
+  def visit(e: Element): Elem = null
+
+  def visitModel(m: SBMLModel): Elem = null
+
+  def visitCompartment(c: Compartment): Elem = null
+
+  def visitConstraint(ct: Constraint): Elem = null
+
+  def visitFunctionDefinition(fd: FunctionDefinition): Elem = null
+
+  def visitKineticLaw(kl: KineticLaw): Elem = null
+
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): Elem = null
+
+  def visitParameter(p: Parameter): Elem = null
+
+  def visitReaction(r: Reaction): Elem = null
+
+  def visitSpecies(s: Species): Elem = null
+
+  def visitSpeciesReference(sr: SpeciesReference): Elem = null
 }

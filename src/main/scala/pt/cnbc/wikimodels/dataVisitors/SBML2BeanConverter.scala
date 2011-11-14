@@ -9,6 +9,7 @@ import pt.cnbc.wikimodels.dataModel._
 import pt.cnbc.wikimodels.util.SBMLHandler
 import scala.collection.JavaConversions._
 import scala.Predef._
+import alexmsmartins.log.LoggerWrapper
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,11 +18,12 @@ import scala.Predef._
  * Time: 19:09
  * To change this template use File | Settings | File Templates.
  */
-object SBML2BeanConverter {
+object SBML2BeanConverter extends LoggerWrapper{
 
   def visit(e: Elem): Element = visitModel((e \ "model").head.asInstanceOf[Elem])
 
   def visitModel(m: Elem): SBMLModel = {
+
     var model = new SBMLModel(SBMLHandler.toStringOrNull((m \ "@metaid").text),
       SBMLHandler.checkCurrentLabelForNotes(m),
       SBMLHandler.toStringOrNull((m \ "@id").text),

@@ -137,3 +137,7 @@ case class SBMLModel() extends Element {
 
   override def theName = this.name
 }
+
+object SBMLModel{
+
+}
