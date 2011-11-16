@@ -29,6 +29,7 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 abstract class Element extends DataModel{
+  //TODO refactor from "Element" to "SBase". This takes a bit of time since the sbml ontology must also be modified and the KB rebuilt and tested.
   val sbmlType = "SBase"
 
   @Id
