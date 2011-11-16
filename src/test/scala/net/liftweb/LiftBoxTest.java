@@ -4,11 +4,11 @@
 
 package net.liftweb;
 
+import alexmsmartins.log.*;
 import com.hp.hpl.jena.graph.query.regexptrees.Nothing;
 import net.liftweb.common.*;
 import net.liftweb.common.Box;
 import net.liftweb.common.Full;
-import org.apache.log4j.*;
 import org.slf4j.Logger;
 import scala.Int;
 import org.junit.*;
@@ -17,10 +17,10 @@ import java.util.EmptyStackException;
 
 import static org.junit.Assert.*;
 
-public class LiftBoxTest {
+public class LiftBoxTest{
 
     public LiftBoxTest(){
-      System.out.println(this.getClass() + " constructor is running");
+        System.out.println(this.getClass() + " constructor is running");
     }
 
     @Before

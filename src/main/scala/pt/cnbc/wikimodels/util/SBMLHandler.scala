@@ -224,8 +224,8 @@ object LibSBMLLoader {
         //            System.setProperty("java.library.path", "/usr/local/lib:/usr/local:" + System.getProperty("java.library.path"));
         //System.out.println(System.getProperty("java.library.path"));
 
-        //            System.loadLibrary("libsbml");
-        System.load("/usr/local/lib/libsbmlj.so")
+                    System.loadLibrary("sbmlj");
+        //System.load("/usr/lib64/libsbmlj.so")
         /* Extra check to be sure we have access to libSBML: */
         if( Class.forName("org.sbml.libsbml.libsbml") == null)
           alreadyLoaded = false
