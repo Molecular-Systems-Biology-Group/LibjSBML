@@ -25,6 +25,8 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
       val scalaRepo = "scala-tools.org" % "http://scala-tools.org/repo-releases" 
 
+      val usefullScalaStuff = "UsefullScalaStuff" % "UsefullScalaStuff" % "0.1" % "compile"
+      val slf4jApi = "org.slf4j" % "slf4j-api" % "1.6.1" % "compile"
 
       //val libsbml = "org.sbml" % "libsbmmlj" % "3.4"
     }

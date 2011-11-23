@@ -219,36 +219,71 @@ object LibSBMLLoader {
     import javax.resource.spi.SecurityException
     //TODO Remove javax.resource.connector-api dependency from wm_libjsbml if this is not in wm_libjsbml anymore ;)
     if (alreadyLoaded == false) {
-      //is this really necessary
+      var varname:String = null
+      var shlibname:String = null
+
+      if (System.getProperty("os.name").startsWith("Mac OS"))
+      {
+        varname = "DYLD_LIBRARY_PATH";    // We're on a Mac.
+        shlibname = "libsbmlj.jnilib and/or libsbml.dylib";
+      }
+      else
+      {
+        varname = "LD_LIBRARY_PATH";      // We're not on a Mac.
+        shlibname = "libsbmlj.so and/or libsbml.so";
+      }
+
       try {
         //            System.setProperty("java.library.path", "/usr/local/lib:/usr/local:" + System.getProperty("java.library.path"));
         //System.out.println(System.getProperty("java.library.path"));
 
-                    System.loadLibrary("sbmlj");
+        System.loadLibrary("sbmlj");
         //System.load("/usr/lib64/libsbmlj.so")
         /* Extra check to be sure we have access to libSBML: */
-        if( Class.forName("org.sbml.libsbml.libsbml") == null)
+        if( Class.forName("org.sbml.libsbml.libsbml") == null){
           alreadyLoaded = false
-        else
-          alreadyLoaded = true
+          throw new ClassNotFoundException("While loading org.sbml.libsbml.libsbml")
+        } else alreadyLoaded = true
       } catch {
         case e: SecurityException => {
-          System.err.println("A security manager exists and its" +
+          Console.err.println("A security manager exists but it's <code>checkLink</code> method didn't allow " +
+                             "libSBML to be loaded.\n"+
+                             "Error encountered while attempting to load libSBML:");
+          e.printStackTrace();
+          Console.err.println("Could not load the libSBML library files due to a"+
+                             " security exception.\n");
+
+          Console.err.println("A security manager exists and its" +
                              "<code>checkLink</code> method doesn't" +
                              "allow loading of the specified dynamic " +
                              "library: ")
           e.printStackTrace
         }
         case e: UnsatisfiedLinkError => {
-          Console.println("UnsatisfiedLinkError  if the file " +
-                          "does not exist: ")
-          e.printStackTrace
+          Console.err.println("Error encountered while attempting to load libSBML:");
+          e.printStackTrace();
+          Console.err.println("Please check the value of your " + varname +
+           " environment variable and/or" +
+                             " your 'java.library.path' system property" +
+                             " (depending on which one you are using) to" +
+                             " make sure it lists all the directories needed to" +
+                             " find the " + shlibname + " library file and the" +
+                             " libraries it depends upon (e.g., the XML parser).");
+        }
+        case e:ClassNotFoundException => {
+          Console.err.println("Error: unable to load the file 'libsbmlj.jar'." +
+                             " It is likely that your -classpath command line " +
+                             " setting or your CLASSPATH environment variable " +
+                             " do not include the file 'libsbmlj.jar'.");
         }
         case e: NullPointerException => {
           Console.println("<code>filename</code> is " +
                           "<code>null</code>")
           e.printStackTrace
         }
+      } finally {
+        //FIXME It would be useful to handle the exceptional cases in a more elegant way. WITHOUT EXITING!!!!
+        System.exit(1)
       }
     }
   }
