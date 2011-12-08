@@ -14,8 +14,11 @@ import org.sbml.libsbml.SBMLReader
 import pt.cnbc.wikimodels.exceptions.BadFormatException
 import xml._
 import pt.cnbc.wikimodels.sbml.namesspaces._
+import alexmsmartins.log.LoggerWrapper
+import tools.nsc.util.trace
+import tools.nsc.util.trace
 
-class LibSBMLHandler {
+class LibSBMLHandler extends LoggerWrapper{
 
   if (LibSBMLHandler.LibSBMLLoaded == false) {
     LibSBMLLoader()
@@ -95,14 +98,16 @@ object SBMLHandler {
    * @returns a <notes> sections with the content of notesContent
    * embebed inside or null if there is no content to embeb
    */
-  private def wrapHTML(content: String, labelWrapper: String) =
+  private def wrapHTML(content: String, labelWrapper: String) = {
+    trace("Calling LibSBMLHandler.wrapHTML")
     if (content != null && content.trim != "") {
-      XML.loadString("<" + labelWrapper + ">" +
+      XML.loadString(debug("Wrapped XML is {} ","<" + labelWrapper + ">" +
           content +
-          "</" + labelWrapper + ">")
+          "</" + labelWrapper + ">"))
     } else {
       null.asInstanceOf[Elem]
     }
+  }
 
   private def addNamespaceToXML(ns: NodeSeq, namespace: String): NodeSeq ={
    if (ns != Nil)
