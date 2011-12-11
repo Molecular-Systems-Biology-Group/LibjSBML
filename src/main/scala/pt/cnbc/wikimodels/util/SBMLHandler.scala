@@ -8,13 +8,13 @@
 
 package pt.cnbc.wikimodels.util
 
+import alexmsmartins.log.LoggerWrapper
 import org.sbml.libsbml.SBMLDocument
 import org.sbml.libsbml.SBMLReader
 
 import pt.cnbc.wikimodels.exceptions.BadFormatException
 import xml._
 import pt.cnbc.wikimodels.sbml.namesspaces._
-import alexmsmartins.log.LoggerWrapper
 import tools.nsc.util.trace
 import tools.nsc.util.trace
 
@@ -71,7 +71,7 @@ object LibSBMLHandler {
   var LibSBMLLoaded = false
 }
 
-object SBMLHandler {
+object SBMLHandler extends LoggerWrapper{
 
   /**
    * Produces the XML of the <notes section of any SBase

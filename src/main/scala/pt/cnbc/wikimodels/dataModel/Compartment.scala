@@ -29,7 +29,7 @@ case class Compartment() extends Element {
   var id: String = null
   var name: String = null
   var compartmentType: String = null //not implemented yet
-  var spatialDimensions: Int = 0
+  var spatialDimensions: Int = 3
   var size: java.lang.Double = 0 //this can be null if spacialDimen
   var units: String = null //not implemented yet
   var outside: String = null
@@ -82,3 +82,17 @@ case class Compartment() extends Element {
 
   override def theName = this.name
 }
+
+object Compartment{
+  val defaultSpatialDimensions = ValidSpatialDimensions.THREE
+  val constant: Boolean = true
+}
+object ValidSpatialDimensions extends Enumeration(0) {
+  type ValidSpatialDimensions = Value
+  val ZERO = Value(0)
+  val ONE  = Value(1)
+  val TWO  = Value(2)
+  val THREE = Value(3)
+  def contains(x:Int) = this.values.exists(_.id == x)
+}
+
