@@ -14,6 +14,7 @@ import org.junit.Assert._
 import pt.cnbc.wikimodels.exceptions.BadFormatException
 import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
 import alexmsmartins.log.LoggerWrapper
+import pt.cnbc.wikimodels.util.SBMLHandler
 
 class SBMLModelTest extends LoggerWrapper{
   val model1 =
@@ -218,11 +219,11 @@ class SBMLModelTest extends LoggerWrapper{
     trace("Running test SBMLModelTest.createModelWithoutComponents")
     val sbml = new SBMLModel("any_metaid", <p>dasdfs</p>,
       "any_id", "any_name")
-    /*debug("XML representation of the model is "
-   + sbml.toXML.toString)*/
+    debug("XML representation of the model is "
+   + sbml.toXML.toString)
     val sbml2 = SBML2BeanConverter.visitModel(sbml.toXML)
-    /*debug("XML representation of the reound tripped model is "
-   + sbml2.toXML.toString)*/
+    debug("XML representation of the reound tripped model is "
+   + sbml2.toXML.toString)
 
 
     assertTrue(sbml == sbml2)
@@ -288,18 +289,31 @@ class SBMLModelTest extends LoggerWrapper{
   @Test
   def createModelWithParameters = {
     trace("Running test SBMLModelTest.createModelWithParameters")
-   val xmlModelWithParameters =
-    <model id="transcription">
-      <listOfParameters>
-          <parameter id="transcriptionDelay" value="10" units="time"/>
-          <parameter id="transcriptionDelay2" value="102" units="time"/>
-      </listOfParameters>
-    </model>
+    val xmlModelWithParameters =
+      <model id="transcription">
+        <listOfParameters>
+            <parameter id="transcriptionDelay" value="10" units="time"/>
+            <parameter id="transcriptionDelay2" value="102" units="time"/>
+        </listOfParameters>
+      </model>
     val modelWParamenters = SBML2BeanConverter.visitModel(xmlModelWithParameters)
     val model = new SBMLModel()
     val lParamSize = (modelWParamenters.toXML \ "listOfParameters" \ "parameter")
             .map(i => SBML2BeanConverter.visitParameter(i.asInstanceOf[scala.xml.Elem])).size
 
     assertEquals(lParamSize, 2)
+  }
+
+  @Test
+  def setNotesFromXML = {
+    trace("Running test SBMLModelTest.setNotesFromXML")
+    val note1= <p>THIS AS TO APPEAR</p>
+    val note2 = <p><h3>Olá</h3><br/>Corpo.<!-- Commentario--></p>.child
+    val sbml = new SBMLModel
+    debug("SBMLHandler.addNamespaceToXHTML call has returned " + SBMLHandler.addNamespaceToXHTML(note1))
+    debug("SBMLHandler.addNamespaceToXHTML call has returned " + SBMLHandler.addNamespaceToXHTML(note2  ))
+    sbml.setNotesFromXML(note1)
+    debug("Notes after setNotesFromXML is {}", sbml.notes)
+    assert(sbml.notes.contains("APPEAR"))
   }
 }

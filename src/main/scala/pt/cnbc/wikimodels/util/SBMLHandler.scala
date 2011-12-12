@@ -110,31 +110,40 @@ object SBMLHandler extends LoggerWrapper{
   }
 
   private def addNamespaceToXML(ns: NodeSeq, namespace: String): NodeSeq ={
-   if (ns != Nil)
-     ns.map(i => {
-       new Elem(i.prefix,
-         i.label,
-         i.attributes,
-         NamespaceBinding(null, namespace, TopScope ),
-         addTopScopeToXMLRecurs(i.child, namespace): _*)
-     }
-     ).filter(_.label != "#PCDATA")
-   //the filter is an hack to make <#PCDATA go away
-   else Nil
- }
-
-  def addTopScopeToXMLRecurs(ns: NodeSeq, namespace: String): NodeSeq ={
+    trace("Calling SBMLHandler.addNamespaceToXML")
+    debug("SBMLHandler.addNamespaceToXML returns {}",
     if (ns != Nil)
       ns.map(i => {
-        new Elem(i.prefix,
-          i.label,
-          i.attributes,
-          TopScope,
-          addTopScopeToXMLRecurs(i.child, namespace): _*)
-      }
-      ).filter(_.label != "#PCDATA")
-    //the filter is an hack to make <#PCDATA go away
-    else Nil
+        debug("Node " + i + " is type " + i.getClass)
+        i match {
+          case x:Elem =>
+            new Elem(i.prefix,
+              x.label,
+              x.attributes,
+              NamespaceBinding(null, namespace, TopScope ),
+              addTopScopeToXMLRecurs(x.child, namespace): _*)
+           case x => x}
+      }).filter(i  => !  i.isInstanceOf[Elem] || i.label != "#PCDATA") //hack to make <#PCDATA go away
+    else Nil)
+  }
+
+  def addTopScopeToXMLRecurs(ns: NodeSeq, namespace: String): NodeSeq ={
+    trace("Calling SBMLHandler.addTopScopeToXMLRecurs")
+    debug("SBMLHandler.addTopScopeToXMLRecurs returns {}",
+      if (ns != Nil)
+        ns.map(i =>{
+          debug("Node " + i + " is type " + i.getClass)
+          i match {
+            case x:Elem =>
+              new Elem(x.prefix,
+                x.label,
+                x.attributes,
+                TopScope,
+                addTopScopeToXMLRecurs(x.child, namespace): _*)
+            case x => x
+          }
+        }).filter(i  => (!  i.isInstanceOf[Elem]) || i.label != "#PCDATA") //hack to make <#PCDATA go away
+      else Nil)
   }
 
   def addNamespaceToXHTML(nodeseq: NodeSeq): NodeSeq =
@@ -155,7 +164,7 @@ object SBMLHandler extends LoggerWrapper{
    * if there are not notes
    */
   def checkCurrentLabelForNotes(xmlLabel: Elem): NodeSeq = {
-    Console.println("SBMLHandler.checkCurrentLabelForNotes() was called.")
+    trace("Calling SBMLHandler.checkCurrentLabelForNotes")
     val notes: NodeSeq = (xmlLabel \ "notes")
     if (notes.size == 0) {
       Nil

@@ -73,7 +73,7 @@ case class SBMLModel() extends Element {
     this.id = id
     this.name = name
     //if( ! SBMLHandler.idExistsAndIsValid(this.metaid) ) throw new BadFormatException("MetaId is invalid.")
-    if( ! SBMLHandler.idExistsAndIsValid(this.id)) throw new BadFormatException("Id is invalid.")
+    SBMLHandler.idExistsAndIsValid(this.id)
   }
 
   /**

@@ -33,7 +33,7 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
       
       val logbackclassic = "ch.qos.logback" % "logback-classic" % "0.9.29"
 
-      val log4j = "log4j" % "log4j" % "1.2.16"
+      //val log4j = "log4j" % "log4j" % "1.2.16"
 
       //val libsbml = "org.sbml" % "libsbmmlj" % "3.4"
 
