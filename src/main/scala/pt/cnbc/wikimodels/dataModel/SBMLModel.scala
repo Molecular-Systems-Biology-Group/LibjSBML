@@ -55,7 +55,8 @@ case class SBMLModel() extends Element {
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasParameter")
   var listOfParameters: java.util.Collection[Parameter] = null
   //var listOfInitialAssignments:List[InitialAssignment] = List()
-  //var listOfRules:List[Rule] = List()
+  //TODO listOfRules is missing
+  //var listOfRules: java.util.Collection[Rules] = null
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasConstraint")
   var listOfConstraints: java.util.Collection[Constraint] = null
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasReaction")
@@ -71,7 +72,8 @@ case class SBMLModel() extends Element {
     this.setNotesFromXML(notes)
     this.id = id
     this.name = name
-    SBMLHandler.idExistsAndIsValid(this.id)
+    //if( ! SBMLHandler.idExistsAndIsValid(this.metaid) ) throw new BadFormatException("MetaId is invalid.")
+    if( ! SBMLHandler.idExistsAndIsValid(this.id)) throw new BadFormatException("Id is invalid.")
   }
 
   /**
