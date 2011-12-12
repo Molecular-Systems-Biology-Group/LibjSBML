@@ -9,7 +9,6 @@ import pt.cnbc.wikimodels.dataModel._
 import pt.cnbc.wikimodels.util.SBMLHandler
 import scala.collection.JavaConversions._
 import scala.Predef._
-import alexmsmartins.log.LoggerWrapper
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,7 +17,7 @@ import alexmsmartins.log.LoggerWrapper
  * Time: 19:09
  * To change this template use File | Settings | File Templates.
  */
-object SBML2BeanConverter extends LoggerWrapper{
+object SBML2BeanConverter {
 
   def visit(e: Elem): Element = visitModel((e \ "model").head.asInstanceOf[Elem])
 

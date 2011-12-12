@@ -8,7 +8,6 @@
 
 package pt.cnbc.wikimodels.util
 
-import alexmsmartins.log.LoggerWrapper
 import org.sbml.libsbml.SBMLDocument
 import org.sbml.libsbml.SBMLReader
 
@@ -18,7 +17,7 @@ import pt.cnbc.wikimodels.sbml.namesspaces._
 import tools.nsc.util.trace
 import tools.nsc.util.trace
 
-class LibSBMLHandler extends LoggerWrapper{
+class LibSBMLHandler {
 
   if (LibSBMLHandler.LibSBMLLoaded == false) {
     LibSBMLLoader()
@@ -71,7 +70,7 @@ object LibSBMLHandler {
   var LibSBMLLoaded = false
 }
 
-object SBMLHandler extends LoggerWrapper{
+object SBMLHandler {
 
   /**
    * Produces the XML of the <notes section of any SBase
@@ -99,22 +98,21 @@ object SBMLHandler extends LoggerWrapper{
    * embebed inside or null if there is no content to embeb
    */
   private def wrapHTML(content: String, labelWrapper: String) = {
-    trace("Calling LibSBMLHandler.wrapHTML")
+    Console.println("Calling LibSBMLHandler.wrapHTML")
     if (content != null && content.trim != "") {
-      XML.loadString(debug("Wrapped XML is {} ","<" + labelWrapper + ">" +
+      XML.loadString("<" + labelWrapper + ">" +
           content +
-          "</" + labelWrapper + ">"))
+          "</" + labelWrapper + ">")
     } else {
       null.asInstanceOf[Elem]
     }
   }
 
   private def addNamespaceToXML(ns: NodeSeq, namespace: String): NodeSeq ={
-    trace("Calling SBMLHandler.addNamespaceToXML")
-    debug("SBMLHandler.addNamespaceToXML returns {}",
+    Console.println("Calling SBMLHandler.addNamespaceToXML")
     if (ns != Nil)
       ns.map(i => {
-        debug("Node " + i + " is type " + i.getClass)
+        Console.println("Node " + i + " is type " + i.getClass)
         i match {
           case x:Elem =>
             new Elem(i.prefix,
@@ -124,15 +122,14 @@ object SBMLHandler extends LoggerWrapper{
               addTopScopeToXMLRecurs(x.child, namespace): _*)
            case x => x}
       }).filter(i  => !  i.isInstanceOf[Elem] || i.label != "#PCDATA") //hack to make <#PCDATA go away
-    else Nil)
+    else Nil
   }
 
   def addTopScopeToXMLRecurs(ns: NodeSeq, namespace: String): NodeSeq ={
-    trace("Calling SBMLHandler.addTopScopeToXMLRecurs")
-    debug("SBMLHandler.addTopScopeToXMLRecurs returns {}",
+    Console.println("Calling SBMLHandler.addTopScopeToXMLRecurs")
       if (ns != Nil)
         ns.map(i =>{
-          debug("Node " + i + " is type " + i.getClass)
+          Console.println("Node " + i + " is type " + i.getClass)
           i match {
             case x:Elem =>
               new Elem(x.prefix,
@@ -143,7 +140,7 @@ object SBMLHandler extends LoggerWrapper{
             case x => x
           }
         }).filter(i  => (!  i.isInstanceOf[Elem]) || i.label != "#PCDATA") //hack to make <#PCDATA go away
-      else Nil)
+      else Nil
   }
 
   def addNamespaceToXHTML(nodeseq: NodeSeq): NodeSeq =
@@ -164,7 +161,7 @@ object SBMLHandler extends LoggerWrapper{
    * if there are not notes
    */
   def checkCurrentLabelForNotes(xmlLabel: Elem): NodeSeq = {
-    trace("Calling SBMLHandler.checkCurrentLabelForNotes")
+    Console.println("Calling SBMLHandler.checkCurrentLabelForNotes")
     val notes: NodeSeq = (xmlLabel \ "notes")
     if (notes.size == 0) {
       Nil

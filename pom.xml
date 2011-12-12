@@ -88,7 +88,7 @@
             <version>1.1</version>
           </dependency>
           <!-- scalaish wrapper around SLF4J -->
-        <dependency>
+        <!--<dependency>
             <groupId>UsefullScalaStuff</groupId>
             <artifactId>UsefullScalaStuff</artifactId>
             <version>0.1</version>
@@ -102,7 +102,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.6.1</version>
-        </dependency>
+        </dependency>-->
         <!-- TODO - delete after transitioning this code to wm_library-->
         <dependency>
             <groupId>com.hp.hpl.jena</groupId>
@@ -141,11 +141,11 @@
             <version>2.7.1</version>
           </dependency>
           <!-- FIXME if SBT project is corrected, delete this dependency -->
-          <dependency>
+          <!--<dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
-          </dependency>
+          </dependency>-->
     </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
