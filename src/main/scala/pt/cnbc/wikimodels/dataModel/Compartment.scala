@@ -85,7 +85,7 @@ case class Compartment() extends Element {
 
 object Compartment{
   val defaultSpatialDimensions = ValidSpatialDimensions.THREE
-  val constant: Boolean = true
+  val defaultConstant: Boolean = true
 }
 object ValidSpatialDimensions extends Enumeration(0) {
   type ValidSpatialDimensions = Value

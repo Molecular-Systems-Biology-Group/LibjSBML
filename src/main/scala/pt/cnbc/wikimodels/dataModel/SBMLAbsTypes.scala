@@ -12,11 +12,15 @@ package pt.cnbc.wikimodels.dataModel
  */
 
 trait SBMLAbsTypes {
-  type Mod <: SBMLModel
-  type FuncDef <: FunctionDefinition
-  type Comp <: Compartment
-  type Spec <: Species
-  type Param <: Parameter
-  type Constr <: Constraint
-  type React <: Reaction
+  // TODO changing the concrete types to abstract ones makes the library more extendable
+  //yet,it is a diffucult
+  // Thse abstract types can be overriden in subclasses of SBMLModel
+  type BASE <: Element
+  type MOD <: SBMLModel
+  type FUN <: FunctionDefinition
+  type COMP <: Compartment
+  type SP <: Species
+  type PAR <: Parameter
+  type CONST <: Constraint
+  type REACT <: Reaction
 }
