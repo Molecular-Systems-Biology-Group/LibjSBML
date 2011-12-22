@@ -1,8 +1,8 @@
+package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
+
 /*
  * Copyright (c) 2011. Alexandre Martins. All rights reserved.
  */
-
-package pt.cnbc.wikimodels.dataVisitors
 
 import pt.cnbc.wikimodels.dataModel._
 import xml.Elem
@@ -14,22 +14,7 @@ import xml.Elem
  * Time: 19:13
  * To change this template use File | Settings | File Templates.
  */
-
-trait SBMLBeanVisitor[T] {
-  def visit(e:Element):T
-  def visitModel(m:SBMLModel):T
-  def visitCompartment(c:Compartment):T
-  def visitConstraint(ct:Constraint):T
-  def visitFunctionDefinition(fd:FunctionDefinition):T
-  def visitKineticLaw(kl:KineticLaw) :T
-  def visitModifierSpeciesReference(msr:ModifierSpeciesReference):T
-  def visitParameter(p:Parameter):T
-  def visitReaction(r:Reaction):T
-  def visitSpecies(s:Species):T
-  def visitSpeciesReference(sr:SpeciesReference):T
-}
-
-class Bean2SBMLVisitor extends SBMLBeanVisitor[Elem] {
+class Bean2SBMLConverter{
   //TODO replace _.toXML with this visitor in the code
 
   def visit(e: Element): Elem = null

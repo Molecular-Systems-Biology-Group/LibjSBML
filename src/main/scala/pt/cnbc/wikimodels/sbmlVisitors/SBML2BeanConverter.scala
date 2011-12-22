@@ -1,8 +1,8 @@
+package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
+
 /*
  * Copyright (c) 2011. Alexandre Martins. All rights reserved.
  */
-
-package pt.cnbc.wikimodels.dataVisitors
 
 import xml._
 import pt.cnbc.wikimodels.dataModel._

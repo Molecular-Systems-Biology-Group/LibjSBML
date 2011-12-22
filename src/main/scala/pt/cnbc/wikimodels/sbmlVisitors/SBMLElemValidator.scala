@@ -1,12 +1,10 @@
 /*
- * SBMLElemValidator.scala
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- *  @author Alexandre Martins
- */
-
-package pt.cnbc.wikimodels.dataVisitors
+* SBMLElemValidator.scala
+*
+* To change this template, choose Tools | Template Manager
+* and open the template in the editor.
+*  @author Alexandre Martins
+*/
 
 import javax.xml.validation.SchemaFactory
 import javax.xml.XMLConstants
@@ -214,3 +212,4 @@ class SBMLElemCheckId(val elem:Element) extends SBMLBeanVisitor[Boolean] {
 
   def visitSpeciesReference(m: SpeciesReference): Boolean = false
 }
+package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
