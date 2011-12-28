@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011. Alexandre Martins. All rights reserved.
+ */
+
 package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
 
 /*
@@ -6,36 +10,50 @@ package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
 
 import pt.cnbc.wikimodels.dataModel._
 import xml.Elem
+import pt.cnbc.wikimodels.exceptions.BadFormatException
 
 /**
- * Created by IntelliJ IDEA.
- * User: alex
+ * Visitor for SBML instances.
+ * This visitor will not make any changes to the instances that it visits. Check SBMLBeanChanger if that is what you want.
+ * User: Alexandre Martins
  * Date: 07-10-2011
  * Time: 19:13
  * To change this template use File | Settings | File Templates.
  */
-class Bean2SBMLConverter{
+trait SBMLBeanVisitor[T]{
   //TODO replace _.toXML with this visitor in the code
 
-  def visit(e: Element): Elem = null
+  def visit(e: Element) = e match {
+    case m:SBMLModel => visitModel(m)
+    case cp:Compartment => visitCompartment(cp)
+    case ct:Constraint => visitConstraint(ct)
+    case fd:FunctionDefinition => visitFunctionDefinition(fd)
+    case kl:KineticLaw => visitKineticLaw(kl)
+    case msr:ModifierSpeciesReference => visitModifierSpeciesReference(msr)
+    case p:Parameter => visitParameter(p)
+    case r:Reaction => visitReaction(r)
+    case s:Species => visitSpecies(s)
+    case sr:SpeciesReference => visitSpeciesReference(sr)
+    case _ => throw new BadFormatException("Unknow element inside SBMLModel when generating SBML Lvel 2 Version 4")
+  }
 
-  def visitModel(m: SBMLModel): Elem = null
+  def visitModel(m: SBMLModel): T
 
-  def visitCompartment(c: Compartment): Elem = null
+  def visitCompartment(c: Compartment): T
 
-  def visitConstraint(ct: Constraint): Elem = null
+  def visitConstraint(ct: Constraint): T
 
-  def visitFunctionDefinition(fd: FunctionDefinition): Elem = null
+  def visitFunctionDefinition(fd: FunctionDefinition): T
 
-  def visitKineticLaw(kl: KineticLaw): Elem = null
+  def visitKineticLaw(kl: KineticLaw): T
 
-  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): Elem = null
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): T
 
-  def visitParameter(p: Parameter): Elem = null
+  def visitParameter(p: Parameter): T
 
-  def visitReaction(r: Reaction): Elem = null
+  def visitReaction(r: Reaction): T
 
-  def visitSpecies(s: Species): Elem = null
+  def visitSpecies(s: Species): T
 
-  def visitSpeciesReference(sr: SpeciesReference): Elem = null
+  def visitSpeciesReference(sr: SpeciesReference): T
 }

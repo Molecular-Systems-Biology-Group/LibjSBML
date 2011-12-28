@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011. Alexandre Martins. All rights reserved.
+ */
+
 package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
 
 /*

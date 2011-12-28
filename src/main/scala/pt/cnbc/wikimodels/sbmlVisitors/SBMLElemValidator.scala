@@ -1,4 +1,10 @@
 /*
+ * Copyright (c) 2011. Alexandre Martins. All rights reserved.
+ */
+
+package pt.cnbc.wikimodels.sbmlVisitors
+
+/*
 * SBMLElemValidator.scala
 *
 * To change this template, choose Tools | Template Manager
@@ -6,6 +12,7 @@
 *  @author Alexandre Martins
 */
 
+import dataVisitors.SBMLBeanVisitor
 import javax.xml.validation.SchemaFactory
 import javax.xml.XMLConstants
 import javax.xml._
@@ -80,136 +87,80 @@ object SBMLValidator {
   }
 }
 
-class SBMLStrictValidator(val elem:Element)  {
+/**
+ * Validates according to SBML rules. If this methods accepts a model that
+ */
+object SBMLStrictValidator extends SBMLBeanVisitor[List[String]]{
   import pt.cnbc.wikimodels.exceptions.BadFormatException
 
-  /**
-   * Validates according to SBML rules. If this methods accepts a model that
-   */
-  def validateSBMLStrictly():Boolean = elem match {
-    case cp:Compartment => false
-    case ct:Constraint => false
-    case fd:FunctionDefinition => false
-    case kl:KineticLaw => false
-    case msr:ModifierSpeciesReference => false
-    case p:Parameter => false
-    case r:Reaction => false
-    case m:SBMLModel => false
-    case s:Species => false
-    case sr:SpeciesReference => false
-    case _ => throw new BadFormatException("Unknow element inside SBMLModel when generating SBML Lvel 2 Version 4")
-  }
 
-  /**
-   * Detects obious errors in SBML that are not acceptable even in a half finished model.
-   * This validator is very tolerant to inconsistencies and is meant to be used in SBML editor
-   */
-  def validateSBMLloosely():Boolean ={
-          val o:Option[Int] = Some(1)
-    false
-  }
+  def visitModel(m: SBMLModel): List[String] = "Stub error" :: Nil
 
-  def validateSBMLForSimulation:Boolean = elem match {
-    case cp:Compartment => false
-    case ct:Constraint => false
-    case fd:FunctionDefinition => false
-    case kl:KineticLaw => false
-    case msr:ModifierSpeciesReference => false
-    case p:Parameter => false
-    case r:Reaction => false
-    case m:SBMLModel => false
-    case s:Species => false
-    case sr:SpeciesReference => false
-    case _ => throw new BadFormatException("Unknow element inside SBMLModel when generating SBML Lvel 2 Version 4")
-  }
+  def visitCompartment(c: Compartment): List[String] = "Stub error" :: Nil
+
+  def visitConstraint(ct: Constraint): List[String] = "Stub error" :: Nil
+
+  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "Stub error" :: Nil
+
+  def visitKineticLaw(kl: KineticLaw): List[String] = "Stub error" :: Nil
+
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "Stub error" :: Nil
+
+  def visitParameter(p: Parameter): List[String] = "Stub error" :: Nil
+
+  def visitReaction(r: Reaction): List[String] = "Stub error" :: Nil
+
+  def visitSpecies(s: Species): List[String] = "Stub error" :: Nil
+
+  def visitSpeciesReference(sr: SpeciesReference): List[String] = "Stub error" :: Nil
 }
 
 /**
- * class that checks if all metaids of a an element are valid.
- * The rules are:
- *  - no metaId should be repeated across the entire knowledgebase
- *  - if metaId does not exist for a certain element it should be created from the id
+ * Detects obious errors in SBML that are not acceptable even in a half finished model.
+ * This validator is very tolerant to inconsistencies and is meant to be used in SBML editor
  */
-class SBMLElemCheckMetaId(val elem: Element) extends SBMLBeanVisitor[Boolean] {
-  import pt.cnbc.wikimodels.exceptions.BadFormatException
+object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
+  def visitModel(m: SBMLModel): List[String] = "Stub error" :: Nil
 
-  def visit(e:Element):Boolean = e match {
-    case cp:Compartment => visitCompartment(cp)
-    case ct:Constraint => visitConstraint(ct)
-    case fd:FunctionDefinition => visitFunctionDefinition(fd)
-    case kl:KineticLaw => visitKineticLaw(kl)
-    case msr:ModifierSpeciesReference => visitModifierSpeciesReference(msr)
-    case p:Parameter => visitParameter(p)
-    case r:Reaction => visitReaction(r)
-    case m:SBMLModel => visitModel(m)
-    case s:Species => visitSpecies(s)
-    case sr:SpeciesReference => visitSpeciesReference(sr)
-    case _ => throw new BadFormatException("Unknow element inside SBMLModel when checking for metaids")
-  }
+  def visitCompartment(c: Compartment): List[String] = "Stub error" :: Nil
 
-  def visitModel(m: SBMLModel): Boolean = false
+  def visitConstraint(ct: Constraint): List[String] = "Stub error" :: Nil
 
-  def visitCompartment(c: Compartment): Boolean = false
+  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "Stub error" :: Nil
 
-  def visitConstraint(ct: Constraint): Boolean = false
+  def visitKineticLaw(kl: KineticLaw): List[String] = "Stub error" :: Nil
 
-  def visitFunctionDefinition(fd: FunctionDefinition): Boolean = false
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "Stub error" :: Nil
 
-  def visitKineticLaw(kl: KineticLaw): Boolean = false
+  def visitParameter(p: Parameter): List[String] = "Stub error" :: Nil
 
-  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): Boolean = false
+  def visitReaction(r: Reaction): List[String] = "Stub error" :: Nil
 
-  def visitParameter(p: Parameter): Boolean = false
+  def visitSpecies(s: Species): List[String] = "Stub error" :: Nil
 
-  def visitReaction(r: Reaction): Boolean = false
-
-  def visitSpecies(s: Species): Boolean = false
-
-  def visitSpeciesReference(sr: SpeciesReference): Boolean = false
+  def visitSpeciesReference(sr: SpeciesReference): List[String] = "Stub error" :: Nil
 }
 
-/**
- * class that checks if all metaids of a an element are valid.
- * The rules are:
- *  - no metaId should be repeated across the entire knowledgebase
- *  - if metaId does not exist for a certain element it should be created from the id
- */
-class SBMLElemCheckId(val elem:Element) extends SBMLBeanVisitor[Boolean] {
-  import pt.cnbc.wikimodels.exceptions.BadFormatException
+object SBMLValidatorForSimulation extends SBMLBeanVisitor[List[String]]{
+  def visitModel(m: SBMLModel): List[String] = "Stub error" :: Nil
 
-  def visit(e:Element):Boolean = e match {
-    case cp:Compartment => visitCompartment(cp)
-    case ct:Constraint => visitConstraint(ct)
-    case fd:FunctionDefinition => visitFunctionDefinition(fd)
-    case kl:KineticLaw => visitKineticLaw(kl)
-    case msr:ModifierSpeciesReference => visitModifierSpeciesReference(msr)
-    case p:Parameter => visitParameter(p)
-    case r:Reaction => visitReaction(r)
-    case m:SBMLModel => visitModel(m)
-    case s:Species => visitSpecies(s)
-    case sr:SpeciesReference => visitSpeciesReference(sr)
-    case _ => throw new BadFormatException("Unknow element inside SBMLModel when checking for metaids")
-  }
+  def visitCompartment(c: Compartment): List[String] = "Stub error" :: Nil
 
+  def visitConstraint(ct: Constraint): List[String] = "Stub error" :: Nil
 
-  def visitModel(m: SBMLModel): Boolean = false
+  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "Stub error" :: Nil
 
-  def visitCompartment(m: Compartment): Boolean = false
+  def visitKineticLaw(kl: KineticLaw): List[String] = "Stub error" :: Nil
 
-  def visitConstraint(m: Constraint): Boolean = false
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "Stub error" :: Nil
 
-  def visitFunctionDefinition(m: FunctionDefinition): Boolean = false
+  def visitParameter(p: Parameter): List[String] = "Stub error" :: Nil
 
-  def visitKineticLaw(m: KineticLaw): Boolean = false
+  def visitReaction(r: Reaction): List[String] = "Stub error" :: Nil
 
-  def visitModifierSpeciesReference(m: ModifierSpeciesReference): Boolean = false
+  def visitSpecies(s: Species): List[String] = "Stub error" :: Nil
 
-  def visitParameter(m: Parameter): Boolean = false
-
-  def visitReaction(m: Reaction): Boolean = false
-
-  def visitSpecies(m: Species): Boolean = false
-
-  def visitSpeciesReference(m: SpeciesReference): Boolean = false
+  def visitSpeciesReference(sr: SpeciesReference): List[String] = "Stub error" :: Nil
 }
-package pt.cnbc.wikimodels.sbmlVisitors.dataVisitors
+
+
