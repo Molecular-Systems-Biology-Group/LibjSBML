@@ -84,15 +84,15 @@ case class Compartment() extends Element {
 }
 
 object Compartment{
-  val defaultSpatialDimensions = ValidSpatialDimensions.THREE
+  val defaultSpatialDimensions = ValidSpatialDimensions.`3D`
   val defaultConstant: Boolean = true
 }
 object ValidSpatialDimensions extends Enumeration(0) {
   type ValidSpatialDimensions = Value
-  val ZERO = Value(0)
-  val ONE  = Value(1)
-  val TWO  = Value(2)
-  val THREE = Value(3)
+  val `0D` = Value(0)
+  val `1D` = Value(1)
+  val `2D` = Value(2)
+  val `3D` = Value(3)
   def contains(x:Int) = this.values.exists(_.id == x)
 }
 

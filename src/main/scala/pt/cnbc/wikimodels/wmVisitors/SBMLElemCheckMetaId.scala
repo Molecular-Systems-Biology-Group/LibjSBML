@@ -56,8 +56,7 @@ object TempValidations extends SBMLBeanVisitor[List[String]]{
   )
 
   def visitModel(m: SBMLModel): List[String] = {
-     validations.map(f => f(m)).fold(:::)
-
+     validations.map(f => f(m)).fold(Nil)( (x,y) => x ::: y)
   }
 
   def visitCompartment(c: Compartment): List[String] = null
