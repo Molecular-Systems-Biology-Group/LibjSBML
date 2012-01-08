@@ -12,17 +12,19 @@ package pt.cnbc.wikimodels.sbmlVisitors
 *  @author Alexandre Martins
 */
 
-import dataVisitors.SBMLBeanVisitor
+import java.lang.String
+import java.io.{FileInputStream, File}
 import javax.xml.validation.SchemaFactory
 import javax.xml.XMLConstants
 import javax.xml._
 import org.sbml.libsbml.SBMLReader
-import pt.cnbc.wikimodels.dataModel._
 import javax.xml.transform.stream.StreamSource
 import org.xml.sax.InputSource
-import java.io.{FileInputStream, File}
-import pt.cnbc.wikimodels.util.XSDAwareXML
+import scala.collection.JavaConversions._
 import pt.cnbc.wikimodels.exceptions.ValidationDefaultCase._
+import pt.cnbc.wikimodels.util.{SBMLParser, XMLParser, XSDAwareXML}
+import dataVisitors.SBMLBeanVisitor
+import pt.cnbc.wikimodels.dataModel._
 
 
 object SBMLValidator {
@@ -116,10 +118,15 @@ object SBMLStrictValidator extends SBMLBeanVisitor[List[String]]{
 }
 
 /**
- * Detects obious errors in SBML that are not acceptable even in a half finished model.
- * This validator is very tolerant to inconsistencies and is meant to be used in SBML editor
+ * Detects obvious errors in SBML that are not acceptable even in a half finished model.
+ * This validator is very tolerant to inconsistencies and is meant to be used during SBML model editing
  */
 object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
+  
+  private var metaIdTab = Map.empty[String, Int]
+  private var idTab = Map.empty[String, Element{def id:String}]
+
+
   def visitModel(m: SBMLModel): List[String] = "Stub error" :: Nil
 
   def visitCompartment(c: Compartment): List[String] = "Stub error" :: Nil
@@ -139,28 +146,128 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
   def visitSpecies(s: Species): List[String] = "Stub error" :: Nil
 
   def visitSpeciesReference(sr: SpeciesReference): List[String] = "Stub error" :: Nil
+
+  protected def checkMetaId(e:Element) = {
+    val ret = if(e.metaid == null || e.metaid.trim() == ""){
+      "A " + e.sbmlType + " has no metaid" :: Nil
+    } else if( metaIdTab contains e.metaid ){
+      "There is already " + (metaIdTab get e.metaid).get + " elements with the same metaId in the model." :: Nil
+      metaIdTab += (e.metaid -> (metaIdTab.getOrElse(e.metaid,0) + 1))
+    } else Nil
+  }
+
 }
 
 object SBMLValidatorForSimulation extends SBMLBeanVisitor[List[String]]{
-  def visitModel(m: SBMLModel): List[String] = "Stub error" :: Nil
+  def visitModel(m: SBMLModel): List[String] = {
+    XMLChecks.isValidIDType(m.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(m.id) :::
+    m.listOfFunctionDefinitions.map(visitFunctionDefinition(_) ).flatMap(i => i).toList :::
+    m.listOfCompartments.map(visitCompartment(_) ).flatMap(i => i).toList :::
+    m.listOfSpecies.map(visitSpecies(_) ).flatMap(i => i).toList :::
+    m.listOfParameters.map(visitParameter(_) ).flatMap(i => i).toList :::
+    m.listOfConstraints.map(visitConstraint(_) ).flatMap(i => i).toList :::
+    m.listOfReactions.map(visitReaction(_) ).flatMap(i => i).toList ::: Nil
+  }
 
-  def visitCompartment(c: Compartment): List[String] = "Stub error" :: Nil
+  def visitCompartment(c: Compartment): List[String] = {
+    XMLChecks.isValidIDType(c.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(c.id) ;;;  Nil
+  }
 
-  def visitConstraint(ct: Constraint): List[String] = "Stub error" :: Nil
+  def visitConstraint(ct: Constraint): List[String] = {
+    XMLChecks.isValidIDType(ct.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(ct.id) ;;;  Nil
+  }
 
-  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "Stub error" :: Nil
+  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = {
+    XMLChecks.isValidIDType(fd.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(fd.id) ;;;  Nil
+  }
 
-  def visitKineticLaw(kl: KineticLaw): List[String] = "Stub error" :: Nil
+  def visitKineticLaw(kl: KineticLaw): List[String] = {
+    XMLChecks.isValidIDType(kl.metaid)  :::  Nil
+  }
 
-  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "Stub error" :: Nil
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = {
+    XMLChecks.isValidIDType(msr.metaid)  :::
+      SBMLL2V4Checks.isValidSIdType(msr.id) ;;;  Nil
+  }
 
-  def visitParameter(p: Parameter): List[String] = "Stub error" :: Nil
+  def visitParameter(p: Parameter): List[String] = {
+    XMLChecks.isValidIDType(p.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(p.id) ;;;  Nil
+  }
 
-  def visitReaction(r: Reaction): List[String] = "Stub error" :: Nil
+  def visitReaction(r: Reaction): List[String] = {
+    XMLChecks.isValidIDType(r.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(r.id) ;;;  Nil
+  }
 
-  def visitSpecies(s: Species): List[String] = "Stub error" :: Nil
+  def visitSpecies(s: Species): List[String] = {
+    XMLChecks.isValidIDType(s.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(s.id) ;;;  Nil
+  }
 
-  def visitSpeciesReference(sr: SpeciesReference): List[String] = "Stub error" :: Nil
+  def visitSpeciesReference(sr: SpeciesReference): List[String] = {
+    XMLChecks.isValidIDType(sr.metaid)  :::
+    SBMLL2V4Checks.isValidSIdType(sr.id) ;;;  Nil
+  }
+}
+
+object SBMLWMValidator extends SBMLBeanVisitor[List[String]] {
+  def visitModel(m: SBMLModel): List[String] = null
+
+  def visitCompartment(c: Compartment): List[String] = null
+
+  def visitConstraint(ct: Constraint): List[String] = null
+
+  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = null
+
+  def visitKineticLaw(kl: KineticLaw): List[String] = null
+
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = null
+
+  def visitParameter(p: Parameter): List[String] = null
+
+  def visitReaction(r: Reaction): List[String] = null
+
+  def visitSpecies(s: Species): List[String] = null
+
+  def visitSpeciesReference(sr: SpeciesReference): List[String] = null
+}
+
+object XMLChecks extends XMLParser{
+
+  /**
+   * Checks if the string respects XML 1.0 ID type specification
+   * This is the ID type of section 3.1.6 of the SBML specification
+   */
+  def isValidIDType(metaid:String) = {
+    parseAll(Name, metaid) match {
+      case Success(_,_) => Nil
+      case Failure(_,_) => "" + metaid + " is not of type Id has defined in XML 1.0 specification" :: Nil
+      case _ => {
+        "Something is wrong with XML ID type validation " :: Nil
+      }
+    }
+  }
+}
+
+object SBMLL2V4Checks extends SBMLParser{
+
+  /**
+  * Checks if the string respects the SID type of section 3.1.6 of the SBML specification
+   */
+  def isValidSIdType(id:String) = {
+    parseAll( SId, id ) match {
+      case Success(_,_) => Nil
+      case Failure(_,_) => "" + id + " is not of type SId has defined in section 3.1.6 of the SBML specification" :: Nil
+      case _ => {
+        "Something is wrong with SBML SID type validation" :: Nil
+      }
+    }
+  }
 }
 
 
