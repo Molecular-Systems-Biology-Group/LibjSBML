@@ -10,7 +10,7 @@ package pt.cnbc.wikimodels.dataModel
 
 import org.junit._
 import Assert._
-import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
+import pt.cnbc.wikimodels.sbmlVisitors.SBML2BeanConverter
 
 class ReactionTest {
 

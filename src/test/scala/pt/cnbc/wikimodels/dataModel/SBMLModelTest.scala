@@ -12,7 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.Assert._
 import pt.cnbc.wikimodels.exceptions.BadFormatException
-import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
+import pt.cnbc.wikimodels.sbmlVisitors.SBML2BeanConverter
 //import alexmsmartins.log.LoggerWrapper
 import pt.cnbc.wikimodels.util.SBMLHandler
 

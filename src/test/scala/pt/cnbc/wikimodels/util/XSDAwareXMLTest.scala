@@ -12,7 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.Assert._
 import scala.xml._
-import pt.cnbc.wikimodels.dataVisitors.SBMLValidator
+import pt.cnbc.wikimodels.sbmlVisitors.SBMLValidator
 import java.io.{Reader, FileInputStream, File}
 import xml.Source._
 

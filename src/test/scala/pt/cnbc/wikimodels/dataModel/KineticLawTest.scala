@@ -11,7 +11,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert._
-import pt.cnbc.wikimodels.dataVisitors.SBML2BeanConverter
+import pt.cnbc.wikimodels.sbmlVisitors.SBML2BeanConverter
 
 class KineticLawTest{
   val kineticLaw =
