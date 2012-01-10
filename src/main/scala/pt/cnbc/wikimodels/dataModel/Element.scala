@@ -41,6 +41,11 @@ abstract class Element extends DataModel{
   var notes:String = null
 
   def setNotesFromXML(notes:NodeSeq) = {
+    Console.print("Calling Element.setNotesFromXML( " + notes + " )")
+
+    if( notes.size == 0)
+      this.notes = null
+    else
       this.notes = Group(SBMLHandler.addNamespaceToXHTML(notes)).toString()
   }
 
