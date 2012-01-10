@@ -34,7 +34,8 @@ class XSDAwareXMLTest {
   def tearDown: Unit = {
   }
 
-  @Test
+  //TODO Uncomment the XSD test after it as been sped up
+  //@Test
   def loadSchemaWithOriginalCode = {
     //from http://sean8223.blogspot.com/2009/09/xsd-validation-in-scala.html
     import javax.xml.parsers.SAXParser
@@ -88,7 +89,8 @@ class XSDAwareXMLTest {
     val xml = new SchemaAwareFactoryAdapter(s).loadXML(is)
   }
 
-  @Test
+  //TODO Uncomment the XSD test after it as been sped up
+  // @Test
   def validateCorrectSBMLModelL2V4 = {
     // A schema can be loaded in like ...
     val sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
@@ -106,7 +108,8 @@ class XSDAwareXMLTest {
     }
   }
 
-  @Test
+  //TODO Uncomment the XSD test after it as been sped up
+  //@Test
   def obviouslyNotSBML = {
     // A schema can be loaded in like ...
     val xmlStr = <stoopidxml>of course this isn't a model</stoopidxml>.toString
@@ -125,8 +128,9 @@ class XSDAwareXMLTest {
     }
   }
 
-  @Test
-  def checkgeneralXMLValidation = {
+  //TODO Uncomment the XSD test after it as been sped up
+  //@Test
+  def checkGeneralXMLValidation = {
     val is =       this.getClass.getClassLoader.getResourceAsStream("BIOMD0000000070.xml")
     val sbmlString:String = scala.io.Source.fromInputStream(is).getLines().mkString("\n")
     assertEquals(Nil, SBMLValidator.sbmlSchemaValidation( 2 ,4,sbmlString) )

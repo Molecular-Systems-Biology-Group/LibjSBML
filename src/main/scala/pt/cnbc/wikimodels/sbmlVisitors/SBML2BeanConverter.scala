@@ -12,14 +12,12 @@ import scala.Predef._
 import pt.cnbc.wikimodels.exceptions.NotImplementedException
 
 /**
- * Created by IntelliJ IDEA.
- * User: alex
+ * TODO: Please document.
+ * @author: alex
  * Date: 07-10-2011
  * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
 object SBML2BeanConverter {
-
   def visit(e: Elem): Element = {
     e.label match {
       case "sbml" => visitModel(

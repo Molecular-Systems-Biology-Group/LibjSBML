@@ -30,7 +30,7 @@ case class Compartment() extends Element {
   var name: String = null
   var compartmentType: String = null //not implemented yet
   var spatialDimensions: Int = 3
-  var size: java.lang.Double = 0 //this can be null if spacialDimen
+  var size: java.lang.Double = null //this can be null if spacialDimen
   var units: String = null //not implemented yet
   var outside: String = null
   var constant: Boolean = false
@@ -62,17 +62,14 @@ case class Compartment() extends Element {
       throw new BadFormatException("" + spatialDimensions + " is an invalid value for spatialDimensions");
     if (spatialDimensions == 0 && size != null)
       throw new BadFormatException("size should not exist when spacialDimensions is 0");
-    if (spatialDimensions > 0 && size == null)
-      throw new BadFormatException("size should exist when spacialDimensions is positive");
     if (size != null && size.compareTo(0) < 0)
       throw new BadFormatException("size should have a positive value");
   }
 
   override def toXML: Elem = {
     <compartment metaid={metaid} id={id} name={name}
-                 compartmentType={compartmentType}
                  spatialDimensions={spatialDimensions.toString}
-                 size={size.toString} units={units} outside={outside}
+                 size={if(size == null) null else size.toString} units={units} outside={outside}
                  constant={constant.toString}>
       {SBMLHandler.genNotesFromHTML(notes)}
     </compartment>
