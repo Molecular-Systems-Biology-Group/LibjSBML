@@ -14,8 +14,6 @@ import org.sbml.libsbml.SBMLReader
 import pt.cnbc.wikimodels.exceptions.BadFormatException
 import xml._
 import pt.cnbc.wikimodels.sbml.namesspaces._
-import tools.nsc.util.trace
-import tools.nsc.util.trace
 
 class LibSBMLHandler {
 
@@ -104,7 +102,7 @@ object SBMLHandler {
           content +
           "</" + labelWrapper + ">")
     } else {
-      null.asInstanceOf[Elem]
+      null
     }
   }
 
@@ -151,7 +149,7 @@ object SBMLHandler {
 
 
   /**
-   * Checks the current XML label for the presence of a Notes labe.
+   * Checks the current XML label for the presence of a Notes label.
    * The input must be in the form:
    * <currentlabel metaid="123" id="456" name"name789">
    *  <notes>

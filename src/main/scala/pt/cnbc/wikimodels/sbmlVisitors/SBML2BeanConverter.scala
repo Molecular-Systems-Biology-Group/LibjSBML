@@ -57,6 +57,7 @@ object SBML2BeanConverter {
   }
 
   def visitCompartment(c: Elem): Compartment = {
+    import pt.cnbc.wikimodels.dataModel.Compartment._
     new Compartment(SBMLHandler.toStringOrNull((c \ "@metaid").text),
       SBMLHandler.checkCurrentLabelForNotes(c),
       SBMLHandler.toStringOrNull((c \ "@id").text),
@@ -69,7 +70,7 @@ object SBML2BeanConverter {
       try {
         (c \ "@spatialDimensions").text.toInt
       } catch {
-        case _ => 3
+        case _ => defaultSpatialDimensions.id
       },
       try {
         (c \ "@size").text.toDouble
@@ -81,7 +82,7 @@ object SBML2BeanConverter {
       try {
         (c \ "@constant").text.toBoolean
       } catch {
-        case _ => true
+        case _ => defaultConstant
       })
   }
 
