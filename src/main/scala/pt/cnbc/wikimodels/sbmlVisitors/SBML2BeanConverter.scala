@@ -9,6 +9,7 @@ import pt.cnbc.wikimodels.dataModel._
 import pt.cnbc.wikimodels.util.SBMLHandler
 import scala.collection.JavaConversions._
 import scala.Predef._
+import pt.cnbc.wikimodels.exceptions.NotImplementedException
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,7 +20,16 @@ import scala.Predef._
  */
 object SBML2BeanConverter {
 
-  def visit(e: Elem): Element = visitModel((e \ "model").head.asInstanceOf[Elem])
+  def visit(e: Elem): Element = {
+    e.label match {
+      case "sbml" => visitModel(
+        (e \ "model").head.asInstanceOf[Elem]
+      )
+      case "model" => visitModel(e)
+      case "compartment" => visitCompartment(e)
+      case _ => throw new NotImplementedException("ERROR: Method SBML2BeanConverter.visit should never been fed with this xml " + e.toString )
+    }
+  }
 
   def visitModel(m: Elem): SBMLModel = {
 
