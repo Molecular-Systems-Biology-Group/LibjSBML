@@ -26,32 +26,31 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class FunctionDefinition() extends Element{
   override final val sbmlType = "FunctionDefinition"
+  var id:String = null
+  var name:String = null
+  var math:String = null
 
-    var id:String = null
-    var name:String = null
-    var math:String = null
 
+  def this(metaid:String,
+           notes:NodeSeq,
+           id:String,
+           name:String,
+           math:NodeSeq) = {
+      this()
+      this.metaid = metaid
+      this.setNotesFromXML(notes)
+      this.id = id
+      this.name = name
+      this.math = math.toString
+    SBMLHandler.idExistsAndIsValid(this.id)
+  }
 
-    def this(metaid:String,
-             notes:NodeSeq,
-             id:String,
-             name:String,
-             math:NodeSeq) = {
-        this()
-        this.metaid = metaid
-        this.setNotesFromXML(notes)
-        this.id = id
-        this.name = name
-        this.math = math.toString
-      SBMLHandler.idExistsAndIsValid(this.id)
-    }
-
-    override def toXML:Elem = {
-        <functionDefinition metaid={this.metaid} id={id} name={name}>
-            {SBMLHandler.genNotesFromHTML(notes)}
-            {XML.loadString(this.math)}
-        </functionDefinition>
-    }
-    override def theId = this.id
-    override def theName = this.name
+  override def toXML:Elem = {
+      <functionDefinition metaid={this.metaid} id={id} name={name}>
+          {SBMLHandler.genNotesFromHTML(notes)}
+          {XML.loadString(this.math)}
+      </functionDefinition>
+  }
+  override def theId = this.id
+  override def theName = this.name
 }

@@ -24,7 +24,7 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 @BeanInfo
 @Namespace("http://wikimodels.cnbc.pt/ontologies/sbml.owl#")
 case class Species() extends Element{
-
+    override final val sbmlType = "Species"
     var id:String = null
     var name:String = null
     var speciesType:String = null  //it is not included yet.
@@ -71,10 +71,10 @@ case class Species() extends Element{
         <species metaid={metaid} id={id} name={name} 
             speciesType={speciesType} compartment={compartment}
             initialAmount={
-                if(initialAmount == null) null.asInstanceOf[String] else {initialAmount.toString}
+                if(initialAmount == null) null else {initialAmount.toString}
             }
             initialConcentration={
-                if(initialConcentration == null) null.asInstanceOf[String] else {initialConcentration.toString}
+                if(initialConcentration == null) null else {initialConcentration.toString}
             }
             substanceUnits={substanceUnits}
             hasOnlySubstanceUnits={hasOnlySubstanceUnits.toString}
@@ -86,4 +86,10 @@ case class Species() extends Element{
     }
     override def theId = this.id
     override def theName = this.name
+}
+
+object Species {
+  val defaultHasOnlySubstanceUnits = false
+  val defaultBoundaryCondition:Boolean = false
+  val defaultConstant:Boolean = false
 }

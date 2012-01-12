@@ -69,9 +69,12 @@ case class Compartment() extends Element {
   override def toXML: Elem = {
     <compartment metaid={metaid} id={id} name={name}
                  spatialDimensions={spatialDimensions.toString}
-                 size={if(size == null) null else size.toString} units={units} outside={outside}
+                 size={
+                  if(size == null) null else size.toString
+                 }
+                 units={units} outside={outside}
                  constant={constant.toString}>
-      {SBMLHandler.genNotesFromHTML(notes)}
+                 {SBMLHandler.genNotesFromHTML(notes)}
     </compartment>
   }
 

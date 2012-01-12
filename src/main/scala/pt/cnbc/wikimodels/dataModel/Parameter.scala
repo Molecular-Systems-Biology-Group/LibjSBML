@@ -68,7 +68,12 @@ case class Parameter() extends Element {
   }
 
   override def toXML: Elem = {
-    <parameter metaid={metaid} id={id} name={name} value={if (value == null) null.asInstanceOf[String] else {value.toString}} units={units} constant={constant.toString}>
+    <parameter metaid={metaid} id={id} name={name}
+               value={
+                if (value == null) null else {value.toString}
+               }
+               units={units}
+               constant={constant.toString}>
       {SBMLHandler.genNotesFromHTML(notes)}
     </parameter>
   }
