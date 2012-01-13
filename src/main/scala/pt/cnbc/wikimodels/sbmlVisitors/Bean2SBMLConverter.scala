@@ -16,11 +16,10 @@ import pt.cnbc.wikimodels.dataModel._
 import xml.Elem
 
 /**
- * Created by IntelliJ IDEA.
- * User: alex
+ * TODO: Please document.
+ * @author Alexandre Martins
  * Date: 07-10-2011
  * Time: 19:13
- * To change this template use File | Settings | File Templates.
  */
 class Bean2SBMLConverter{
   //TODO replace _.toXML with this visitor in the code

@@ -49,31 +49,50 @@ object SBMLElemCheckMetaId extends SBMLBeanChanger {
 
 object TempValidations extends SBMLBeanVisitor[List[String]]{
 
-  val validations = List(
-    (e:Element) => {
+  var validations:List[(Element) => List[String]] = {
+    //Checks if the metaid contains spaces
+    ((e:Element) => {
       if( e.metaid.contains(" ")) "Metaid in " + e.sbmlType + " can't contain spaces" :: Nil else Nil
-    }
-  )
+    }) :: Nil
+  }
+
 
   def visitModel(m: SBMLModel): List[String] = {
      validations.map(f => f(m)).fold(Nil)( (x,y) => x ::: y)
   }
 
-  def visitCompartment(c: Compartment): List[String] = null
+  def visitCompartment(c: Compartment): List[String] =  {
+    validations.map(f => f(c)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitConstraint(ct: Constraint): List[String] = null
+  def visitConstraint(ct: Constraint): List[String] =  {
+    validations.map(f => f(ct)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = null
+  def visitFunctionDefinition(fd: FunctionDefinition): List[String] = {
+    validations.map(f => f(fd)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitKineticLaw(kl: KineticLaw): List[String] = null
+  def visitKineticLaw(kl: KineticLaw): List[String] =  {
+    validations.map(f => f(kl)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = null
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = {
+    validations.map(f => f(msr)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitParameter(p: Parameter): List[String] = null
+  def visitParameter(p: Parameter): List[String] = {
+    validations.map(f => f(p)).fold(Nil)( (x,y) => x ::: y)
+  }
+  def visitReaction(r: Reaction): List[String] = {
+    validations.map(f => f(r)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitReaction(r: Reaction): List[String] = null
+  def visitSpecies(s: Species): List[String] = {
+    validations.map(f => f(s)).fold(Nil)( (x,y) => x ::: y)
+  }
 
-  def visitSpecies(s: Species): List[String] = null
-
-  def visitSpeciesReference(sr: SpeciesReference): List[String] = null
+  def visitSpeciesReference(sr: SpeciesReference): List[String] = {
+    validations.map(f => f(sr)).fold(Nil)( (x,y) => x ::: y)
+  }
 }

@@ -13,7 +13,7 @@ import pt.cnbc.wikimodels.exceptions.NotImplementedException
 
 /**
  * TODO: Please document.
- * @author: alex
+ * @author Alexandre Martins
  * Date: 07-10-2011
  * Time: 19:09
  */
@@ -24,7 +24,12 @@ object SBML2BeanConverter {
         (e \ "model").head.asInstanceOf[Elem]
       )
       case "model" => visitModel(e)
+      case "functionDefinition" => visitFunctionDefinition(e)
       case "compartment" => visitCompartment(e)
+      case "species" => visitSpecies(e)
+      case "parameter" => visitParameter(e)
+      case "constraint" => visitConstraint(e)
+      case "reaction" => visitReaction(e)
       case _ => throw new NotImplementedException("ERROR: Method SBML2BeanConverter.visit should never been fed with this xml " + e.toString )
     }
   }
