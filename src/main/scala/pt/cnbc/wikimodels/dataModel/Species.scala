@@ -32,9 +32,9 @@ case class Species() extends Element{
     var initialAmount:java.lang.Double = null
     var initialConcentration:java.lang.Double = null
     var substanceUnits:String = null   //it is not included yet.
-    var hasOnlySubstanceUnits:Boolean = false   //it is not included yet.
-    var boundaryCondition:Boolean = false
-    var constant:Boolean = false
+    var hasOnlySubstanceUnits:Boolean = Species.defaultHasOnlySubstanceUnits   //it is not included yet.
+    var boundaryCondition:Boolean = Species.defaultBoundaryCondition
+    var constant:Boolean = Species.defaultConstant
 
     var reactantOf:java.util.Collection[Reaction] = null
     var productOf:java.util.Collection[Reaction] = null

@@ -29,11 +29,11 @@ case class Compartment() extends Element {
   var id: String = null
   var name: String = null
   var compartmentType: String = null //not implemented yet
-  var spatialDimensions: Int = 3
+  var spatialDimensions: Int = Compartment.defaultSpatialDimensions.id
   var size: java.lang.Double = null //this can be null if spacialDimen
   var units: String = null //not implemented yet
   var outside: String = null
-  var constant: Boolean = false
+  var constant: Boolean = Compartment.defaultConstant
 
 
   def this(metaid: String,

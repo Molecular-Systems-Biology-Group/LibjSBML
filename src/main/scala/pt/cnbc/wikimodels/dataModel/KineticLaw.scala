@@ -47,6 +47,6 @@ case class KineticLaw() extends Element{
   }
 
   override def theId:String = throw new RuntimeException("""KineticLaw has no Id""")
-  def theName:String = throw new RuntimeException("""KineticLaw has no Name""")
+  override def theName:String = throw new RuntimeException("""KineticLaw has no Name""")
 
 }

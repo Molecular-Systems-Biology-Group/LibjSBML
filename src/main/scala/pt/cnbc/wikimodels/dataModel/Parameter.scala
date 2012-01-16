@@ -47,7 +47,7 @@ case class Parameter() extends Element {
    * parameter’s value can be changed by rules (see Section 4.11) and that the
    * value is actually intended to be the initial value of the parameter.
    */
-  var constant: Boolean = true
+  var constant: Boolean = Parameter.defaultConstant
 
   def this(metaid: String,
            notes: NodeSeq,
