@@ -82,3 +82,8 @@ case class Parameter() extends Element {
 
   override def theName = this.name
 }
+
+object Parameter {
+  val defaultConstant = true
+}
+

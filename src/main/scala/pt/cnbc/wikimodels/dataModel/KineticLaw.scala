@@ -11,8 +11,8 @@ package pt.cnbc.wikimodels.dataModel
 import scala.collection.JavaConversions._
 import scala.reflect.BeanInfo
 import xml.{NodeSeq, Elem, XML}
-import thewebsemantic._
 import pt.cnbc.wikimodels.util.SBMLHandler
+import thewebsemantic._
 
 
 @BeanInfo
@@ -45,4 +45,8 @@ case class KineticLaw() extends Element{
         </listOfParameters> else scala.xml.Null }
     </kineticLaw>
   }
+
+  override def theId:String = throw new RuntimeException("""KineticLaw has no Id""")
+  def theName:String = throw new RuntimeException("""KineticLaw has no Name""")
+
 }
