@@ -11,7 +11,7 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
       val bryanjswift = "Bryan J Swift Repository" at "http://repos.bryanjswift.com/maven2/"
 
-      val junitInterface = "com.novocode" % "junit-interface" % "0.4.0" % "test"
+      val junitInterface = "com.novocode" % "junit-interface" % "0.8" % "test"
 
       val jenabeanRepo = "Jenabean" at "http://jenabean.googlecode.com/svn/trunk/repo"
 
@@ -37,7 +37,7 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
       //val libsbml = "org.sbml" % "libsbmmlj" % "3.4"
 
-      val liftVersion = "2.4-M5"
+      val liftVersion = "2.4-RC1"
 
       val liftWidget = "net.liftweb" %% "lift-common" % liftVersion % "test"
 
