@@ -15,7 +15,14 @@ import javax.xml.validation.ValidatorHandler
 import org.xml.sax.XMLReader
 import parsing.{FactoryAdapter, NoBindingFactoryAdapter}
 
-class XSDAwareXML(schema:Schema) extends XMLLoader[Elem]{
+/**
+ * Created by IntelliJ IDEA.
+ * User: alex
+ * Date: 12-09-2011
+ * Time: 22:05
+ * Adapted from from http://sean8223.blogspot.com/2009/09/xsd-validation-in-scala.html
+ */
+class XSDAwareXML(schema:Schema) extends XMLLoader[scala.xml.Elem]{
   override def adapter: FactoryAdapter = new SchemaAwareFactoryAdapter(schema)
 
   override def parser: SAXParser = try {
@@ -55,13 +62,6 @@ object XSDAwareXML{
   def apply(schema:Schema) = new XSDAwareXML(schema)
 }
 
-/**
- * Created by IntelliJ IDEA.
- * User: alex
- * Date: 12-09-2011
- * Time: 22:05
- * Adapted from from http://sean8223.blogspot.com/2009/09/xsd-validation-in-scala.html
- */
 
 class SchemaAwareFactoryAdapter(schema:Schema) extends NoBindingFactoryAdapter{
 }

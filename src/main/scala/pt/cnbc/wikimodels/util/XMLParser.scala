@@ -6,8 +6,9 @@ package pt.cnbc.wikimodels.util
 
 import util.parsing.combinator.{RegexParsers, PackratParsers, JavaTokenParsers}
 
-/** Parser for XML 1.0 that tris to be has similar to the EBNF Grammar from http://www.w3.org/TR/2004/REC-xml-20040204/#sec-common-syn as possible.
+/** Partial Parser for XML 1.0 that tris to be has similar to the EBNF Grammar from http://www.w3.org/TR/2004/REC-xml-20040204/#sec-common-syn as possible.
  * Each grammar rule has a direct correspondence to the productions in the specification.
+ * Note this does not replace the handling of XML with scala. It only complements it.
  *  @author: Alexandre Martins
  *  Date: 07-01-2012
  *  Time: 19:27 */
