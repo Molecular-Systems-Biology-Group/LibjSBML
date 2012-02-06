@@ -80,3 +80,7 @@ case class SpeciesReference() extends Element{
   override def theId = this.id
   override def theName = this.name
 }
+
+object SpeciesReference {
+  val defaultStoichiometry:java.lang.Double = 1
+}

@@ -82,11 +82,11 @@
             <version>1.5</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.scalaj</groupId>
             <artifactId>scalaj-collection_${scala.version}</artifactId>
             <version>1.1</version>
-          </dependency>
+          </dependency>-->
           <!-- scalaish wrapper around SLF4J -->
         <!--<dependency>
             <groupId>UsefullScalaStuff</groupId>
