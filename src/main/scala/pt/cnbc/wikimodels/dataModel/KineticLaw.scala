@@ -22,7 +22,7 @@ case class KineticLaw() extends Element{
   var math:String = null
 
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasParameter")
-  var listOfParameters:java.util.Collection[Parameter] = null
+  var listOfParameters:java.util.Collection[Parameter] = Set.empty[Parameter]
 
   def this(metaid:String,
            notes:NodeSeq,

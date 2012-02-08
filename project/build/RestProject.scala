@@ -37,7 +37,7 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
       //val libsbml = "org.sbml" % "libsbmmlj" % "3.4"
 
-      val liftVersion = "2.4-RC1"
+      val liftVersion = "2.4"
 
       val liftWidget = "net.liftweb" %% "lift-common" % liftVersion % "test"
 

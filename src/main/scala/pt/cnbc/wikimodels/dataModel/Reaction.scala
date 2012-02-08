@@ -29,11 +29,11 @@ case class Reaction() extends Element{
 
   //listOf definitions
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasReactant")
-  var listOfReactants:java.util.Collection[SpeciesReference] = null
+  var listOfReactants:java.util.Collection[SpeciesReference] = Set.empty[SpeciesReference]
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasProduct")
-  var listOfProducts:java.util.Collection[SpeciesReference] = null
+  var listOfProducts:java.util.Collection[SpeciesReference] = Set.empty[SpeciesReference]
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasModifier")
-  var listOfModifiers:java.util.Collection[ModifierSpeciesReference] = null
+  var listOfModifiers:java.util.Collection[ModifierSpeciesReference] = Set.empty[ModifierSpeciesReference]
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasOneKineticLaw")
   var kineticLaw:KineticLaw = null //optional
 

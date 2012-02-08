@@ -44,23 +44,23 @@ case class SBMLModel() extends Element {
 
   //listOf definitions
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasFunctionDefinition")
-  var listOfFunctionDefinitions: java.util.Collection[FunctionDefinition] = null
+  var listOfFunctionDefinitions: java.util.Collection[FunctionDefinition] = Set.empty[FunctionDefinition]
   //var listOfUnitDefinitions:List[ÛnitDefinition] = List()
   //var listOfCompartmentTypes:List[CompartmentType] = List()
   //var listOfSpeciesTypes:List[SpeciesType] = List()
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasCompartment")
-  var listOfCompartments: java.util.Collection[Compartment] = null
+  var listOfCompartments: java.util.Collection[Compartment] = Set.empty[Compartment]
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasSpecies")
-  var listOfSpecies: java.util.Collection[Species] = null
+  var listOfSpecies: java.util.Collection[Species] = Set.empty[Species]
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasParameter")
-  var listOfParameters: java.util.Collection[Parameter] = null
+  var listOfParameters: java.util.Collection[Parameter] = Set.empty[Parameter]
   //var listOfInitialAssignments:List[InitialAssignment] = List()
   //TODO listOfRules is missing
   //var listOfRules: java.util.Collection[Rules] = null
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasConstraint")
-  var listOfConstraints: java.util.Collection[Constraint] = null
+  var listOfConstraints: java.util.Collection[Constraint] = Set.empty[Constraint]
   @RdfProperty("http://wikimodels.cnbc.pt/ontologies/sbml.owl#hasReaction")
-  var listOfReactions: java.util.Collection[Reaction] = null
+  var listOfReactions: java.util.Collection[Reaction] = Set.empty[Reaction]
   //var listOfEvents:List[Event] = List()
 
   def this(metaid: String,
