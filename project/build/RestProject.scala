@@ -2,7 +2,7 @@ import sbt._
 
 class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
-    // Add Maven Local repository for SBT to search for (disable if this doesn't suit you)
+      // Add Maven Local repository for SBT to search for (disable if this doesn't suit you)
       val mavenLocal = "Local Maven Repository" at "file://"+Path.userHome+"/.m2/repository"
 
       val mavenRepo = "Maven Central Repository 1" at "http://repo1.maven.org/maven2"
@@ -32,13 +32,5 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
       val slf4jApi = "org.slf4j" % "slf4j-api" % "1.6.1" 
       
       val logbackclassic = "ch.qos.logback" % "logback-classic" % "0.9.29"
-
-      //val log4j = "log4j" % "log4j" % "1.2.16"
-
-      //val libsbml = "org.sbml" % "libsbmmlj" % "3.4"
-
-      val liftVersion = "2.4"
-
-      val liftWidget = "net.liftweb" %% "lift-common" % liftVersion % "test"
 
     }

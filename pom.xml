@@ -22,7 +22,6 @@
         sbt update
         -->
         <jena.version>2.6.2</jena.version>
-        <sdb.version>1.3.1</sdb.version>
     </properties>
 
     <repositories>
@@ -120,19 +119,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.hp.hpl.jena</groupId>
-            <artifactId>sdb</artifactId>
-            <version>${sdb.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.sbml</groupId>
             <artifactId>libsbmlj</artifactId>
             <version>5.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.liftweb</groupId>
-            <artifactId>lift-common_${scala.version}</artifactId>
-            <version>${lift.version}</version>
         </dependency>
         <!-- TODO: delete in production. This only serves to put sources in Intellij IDEA -->
         <dependency>
@@ -140,12 +129,6 @@
             <artifactId>xercesImpl</artifactId>
             <version>2.7.1</version>
           </dependency>
-          <!-- FIXME if SBT project is corrected, delete this dependency -->
-          <!--<dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-          </dependency>-->
     </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
@@ -155,7 +138,7 @@
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
-                <version>2.15.2</version>
+                <version>${maven.scala.plugin}</version>
                 <configuration>
                 </configuration>
                 <executions>
