@@ -41,5 +41,18 @@ class SBML2BeanConverterTest {
     assertEquals(cXMLFinal \ "@size" text, "" )
   }
 
+  def checkCompartmentOutsideRoundTrip = {
+    val cXml =
+      <compartment  constant="true" metaid="c1" name="c1"  compartmentType="" spatialDimensions="3"  id="c1" outside="cell_membrane">
+        <notes>
+          <p xmlns="http://www.w3.org/1999/xhtml">
+            Compartment 1
+          </p>
+        </notes>
+      </compartment>
+    val cXMLFinal = ( SBML2BeanConverter.visitCompartment(cXml) ).toXML
+    assertEquals(cXMLFinal \ "@outside" text, "cell_membrane" )
+  }
+
 }
 

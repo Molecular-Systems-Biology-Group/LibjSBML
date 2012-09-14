@@ -72,7 +72,8 @@ case class Compartment() extends Element {
                  size={
                   if(size == null) null else size.toString
                  }
-                 units={units} outside={outside}
+                 units={units}
+                 outside={outside}
                  constant={constant.toString}>
                  {SBMLHandler.genNotesFromHTML(notes)}
     </compartment>
