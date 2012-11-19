@@ -15,6 +15,7 @@ package pt.cnbc.wikimodels.exceptions
 object ValidationDefaultCase {
   def exceptionHandling(e:Throwable):List[String] = {
     //TODO: maybe some log here
-    """UNEXPECTED ERROR: Please report this as a bug with the following stacktrace:" + """ + e.printStackTrace() :: Nil
+    """UNEXPECTED ERROR: Please report this as a bug with the following stacktrace:
+    """.stripMargin + e.printStackTrace() :: Nil
   }
 }

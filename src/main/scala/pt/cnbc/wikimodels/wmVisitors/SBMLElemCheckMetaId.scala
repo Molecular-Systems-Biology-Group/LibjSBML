@@ -21,7 +21,7 @@ import pt.cnbc.wikimodels.sbmlVisitors.dataVisitors.SBMLBeanVisitor
  * The rules are:
  *  - no metaId should be repeated across the entire knowledgebase
  *  - if metaId does not exist for a certain element it should be created from the id
- * @author: Alexandre Martins
+ * @author Alexandre Martins
  * Date: 22-12-2011
  * Time: 19:44
  */

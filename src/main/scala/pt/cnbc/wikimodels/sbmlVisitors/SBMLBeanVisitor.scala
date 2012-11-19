@@ -37,23 +37,23 @@ trait SBMLBeanVisitor[T]{
     case _ => throw new BadFormatException("Unknow element inside SBMLModel when generating SBML Lvel 2 Version 4")
   }
 
-  def visitModel(m: SBMLModel): T
+  protected def visitModel(m: SBMLModel): T
 
-  def visitCompartment(c: Compartment): T
+  protected def visitCompartment(c: Compartment): T
 
-  def visitConstraint(ct: Constraint): T
+  protected def visitConstraint(ct: Constraint): T
 
-  def visitFunctionDefinition(fd: FunctionDefinition): T
+  protected def visitFunctionDefinition(fd: FunctionDefinition): T
 
-  def visitKineticLaw(kl: KineticLaw): T
+  protected def visitKineticLaw(kl: KineticLaw): T
 
-  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): T
+  protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): T
 
-  def visitParameter(p: Parameter): T
+  protected def visitParameter(p: Parameter): T
 
-  def visitReaction(r: Reaction): T
+  protected def visitReaction(r: Reaction): T
 
-  def visitSpecies(s: Species): T
+  protected def visitSpecies(s: Species): T
 
-  def visitSpeciesReference(sr: SpeciesReference): T
+  protected def visitSpeciesReference(sr: SpeciesReference): T
 }

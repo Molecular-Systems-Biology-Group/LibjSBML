@@ -8,7 +8,7 @@ import util.parsing.combinator.{PackratParsers, RegexParsers}
 
 
 /** Defines types specific to SBML Level 2 version 4
- *  @author: alex
+ *  @author Alexandre Martins
  *  Date: 08-01-2012
  *  Time: 5:50 */
 class SBMLParser extends RegexParsers with PackratParsers {
@@ -16,7 +16,9 @@ class SBMLParser extends RegexParsers with PackratParsers {
 
   lazy val digit   = "[0-9]".r
   
-  lazy val idChar  = letter | digit | " "
+  lazy val idChar  = letter | digit | "_"
   
-  lazy val SId  = ( letter | " " )~rep(idChar)
+  lazy val SId  = ( letter | "_" )~rep(idChar)
+
+  // lazy val UnitSId =
 }
