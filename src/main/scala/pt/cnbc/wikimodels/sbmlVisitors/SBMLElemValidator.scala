@@ -130,12 +130,37 @@ object SBMLStrictValidator extends SBMLBeanVisitor[List[String]]{
 
 }
 
+
+/**
+ * Detects errors in an SBML model that are specific to WikiModels.
+ */
+object WikiModelsValidator extends SBMLBeanVisitor[List[String]]{
+  protected def visitModel(m: SBMLModel): List[String] = null
+
+  protected def visitCompartment(c: Compartment): List[String] = null
+
+  protected def visitConstraint(ct: Constraint): List[String] = null
+
+  protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] = null
+
+  protected def visitKineticLaw(kl: KineticLaw): List[String] = null
+
+  protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = null
+
+  protected def visitParameter(p: Parameter): List[String] = null
+
+  protected def visitReaction(r: Reaction): List[String] = null
+
+  protected def visitSpecies(s: Species): List[String] = null
+
+  protected def visitSpeciesReference(sr: SpeciesReference): List[String] = null
+}
 /**
  * Detects obvious errors in SBML that are not acceptable even in a half finished model.
  * This validator is very tolerant to inconsistencies and is meant to be used during SBML model editing.
  */
 object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
-  
+
 
   def visitModel(m: SBMLModel): List[String] = {
     checkOptionalMetaId(m.metaid) :::
@@ -153,7 +178,8 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
   def visitCompartment(c: Compartment): List[String] =
     checkOptionalMetaId(c.metaid) :::
       checkMandatoryId(c.id) :::
-      checkOptionalName(c.name)
+      checkOptionalName(c.name) :::
+      checkSpatialDimensions(c.spatialDimensions)
 
   def visitConstraint(ct: Constraint): List[String] = "Constraint stub" :: Nil
 
@@ -207,6 +233,13 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
       helpers.XMLChecks.isValidIDType(metaid)
     else Nil
   }
+
+  def checkSpatialDimensions(spatialDimensions: java.lang.Integer):List[String] =
+    spatialDimensions match {
+      case null => Nil
+      case x if(x<=3 && x>=0) => Nil
+      case _ => List("SpatialDimensions must have a value between 0 and 3")
+    }
 }
 
 object SBMLValidatorForSimulation extends SBMLBeanVisitor[List[String]]{
