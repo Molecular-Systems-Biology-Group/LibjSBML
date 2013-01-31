@@ -33,4 +33,7 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
       
       val logbackclassic = "ch.qos.logback" % "logback-classic" % "0.9.29"
 
+      val graphcore = "com.assembla.scala-incubator" % "graph-core_2.9.1" % "1.4.3"
+
+
     }

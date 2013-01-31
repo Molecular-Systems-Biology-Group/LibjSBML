@@ -25,6 +25,7 @@ import pt.cnbc.wikimodels.exceptions.ValidationDefaultCase._
 import pt.cnbc.wikimodels.util.{SBMLParser, XMLParser, XSDAwareXML}
 import dataVisitors.SBMLBeanVisitor
 import pt.cnbc.wikimodels.dataModel._
+import pt.cnbc.wikimodels.sbmlVisitors.helpers.SBMLGraphChecks
 
 
 object SBMLValidator {
@@ -96,16 +97,20 @@ object SBMLStrictValidator extends SBMLBeanVisitor[List[String]]{
   import pt.cnbc.wikimodels.exceptions.BadFormatException
   private var metaIdTab = Map.empty[String, Int]
   private var idTab = Map.empty[String, Element{def id:String}]
-
+  private var sbmlModel:Option[SBMLModel] = None
 
 
   protected def visitModel(m: SBMLModel): List[String] = {
+    this.sbmlModel = Some(m)
     SBMLLooseValidator.visit(m) :::
-    NonRecursSBMLValidator.visit(m)
+    NonRecursSBMLValidator.visit(m) :::
+    checkOutsideAndSpatialDimensionsCongruence(m) :::
+    checkNoCompartmentCycles(m)
   }
 
   protected def visitCompartment(c: Compartment): List[String] =
     NonRecursSBMLValidator.visit(c)
+
 
   protected def visitConstraint(ct: Constraint): List[String] =
     NonRecursSBMLValidator.visit(ct)
@@ -139,6 +144,27 @@ object SBMLStrictValidator extends SBMLBeanVisitor[List[String]]{
       metaIdTab += (e.metaid -> (metaIdTab.getOrElse(e.metaid,0) + 1))
     } else Nil
   }
+
+  /**
+   * There are two restrictions on the inside/outside relationships in SBML.
+   */
+
+  /**
+   * First, because a compartment with spatialDimensions of “0” has no size, such a compartment cannot act as the
+   * “outside” of any other compartment except compartments that also have spatialDimensions values of “0”.
+   */
+  def checkOutsideAndSpatialDimensionsCongruence(model:SBMLModel):List[String] =
+    Nil //List("TODO")
+
+
+  /**
+   * Second, the directed graph formed by representing Compartment objects as vertexes and the outside attribute values
+   * as edges must be acyclic. The latter condition is imposed to prevent a compartment from being located inside itself.
+   * @return
+   */
+  def checkNoCompartmentCycles(model:SBMLModel):List[String] =
+    Nil//SBMLGraphChecks.checkForCyclesInCompartments(model)
+
 }
 
 /**
@@ -168,6 +194,36 @@ object WikiModelsValidator extends SBMLBeanVisitor[List[String]]{
 
 
 /**
+ * Detects cases in a SBML SBML model definition that are not erros per se but are considered bad practice when the aim
+ * is to simulate the model later
+ */
+object GoodPracticesValidator extends SBMLBeanVisitor[List[String]]{
+  protected def visitModel(m: SBMLModel): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitCompartment(c: Compartment): List[String] =
+    if(c.size == null)
+      List("it is extremely good practice to specify values for compartment sizes when such values are available (Section 4.7.4)")
+    else Nil
+
+  protected def visitConstraint(ct: Constraint): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitKineticLaw(kl: KineticLaw): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitParameter(p: Parameter): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitReaction(r: Reaction): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitSpecies(s: Species): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+
+  protected def visitSpeciesReference(sr: SpeciesReference): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+}
+
+
+/**
  * Detects obvious errors in SBML that are not acceptable even in a half finished model.
  * This validator is very tolerant to inconsistencies and is meant to be used during SBML model editing.
  */
@@ -189,8 +245,8 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
     checkOptionalMetaId(c.metaid) :::
       checkMandatoryId(c.id) :::
       checkOptionalName(c.name) :::
-      checkSpatialDimensions(c.spatialDimensions) :::
-      checkSizeValIsValid(c.size)
+      CompartmentCheck.spatialDimensions(c.spatialDimensions) :::
+      CompartmentCheck.sizeIsValid(c.size)
 
   protected def visitConstraint(ct: Constraint): List[String] = "TODO  SBMLLooseValidator Constraint stub" :: Nil
 
@@ -240,30 +296,32 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
   }
 
   def checkOptionalMetaId(metaid:String): List[String] = {
-    if (metaid == null)
+    if (metaid != null)
       helpers.XMLChecks.isValidIDType(metaid)
     else Nil
   }
 
-  def checkSpatialDimensions(spatialDimensions: java.lang.Integer):List[String] =
-    spatialDimensions match {
-      case null => Nil
-      case x if(x<=3 && x>=0) => Nil
-      case _ => List("SpatialDimensions must have a value between 0 and 3")
-    }
+  object CompartmentCheck {
+    def spatialDimensions(spatialDimensions: java.lang.Integer):List[String] =
+      spatialDimensions match {
+        case null => Nil
+        case x if(x<=3 && x>=0) => Nil
+        case _ => List("SpatialDimensions must have a value between 0 and 3")
+      }
 
-  def checkSizeValIsValid(size: Double):List[String] = {
-    size match {
-      case null => Nil
-      case s if(size <= 0) => List("Size must have a positive value")
-      case _ => Nil
+    def sizeIsValid(size: Double):List[String] = {
+      size match {
+        case null => Nil
+        case s if(size <= 0) => List("Size must have a positive value")
+        case _ => Nil
+      }
     }
   }
 }
 
 /**
  * Detects some inconsistencies that should be presented as warnings in a half finished model.
- * It only warns about inconsistencies within the smae SBML element. And for this reason, the visitor for a certain element
+ * It only warns about inconsistencies within the same SBML element. And for this reason, the visitor for a certain element
  * does not check its sub-elements
  */
 object NonRecursSBMLValidator extends SBMLBeanVisitor[List[String]]{
@@ -271,10 +329,20 @@ object NonRecursSBMLValidator extends SBMLBeanVisitor[List[String]]{
     "TODO : WithinSBMLElementValidatorStub error" ::
     Nil
 
-  protected def visitCompartment(c: Compartment): List[String] =
+  protected def visitCompartment(c: Compartment): List[String] = {
     if (c.spatialDimensions == 0 && c.size != null){
-      List("The size attribute must not be present if the spatialDimensions attribute has a value of “0”")
-    } else Nil
+      List("""The size attribute must not be present if the spatialDimensions attribute has a value of “0”; otherwise, a logical inconsistency would exist because a zero-dimensional object cannot have a physical size. (Section 4.7.4)""")
+    } else{
+      List[String]()
+    }.:::(
+    if (c.spatialDimensions == 0 && c.constant == false){
+      List("The constant attribute must default to or be set to “true” if the value of the spatialDimensions attribute is “0”, because a zero-dimensional compartment cannot ever have a size (Section 4.7.6).")
+    } else {List[String]()}).:::(
+    if(c.outside == c.id){
+        List("A compartment cannot be outside itself (Section 4.7.7)")
+    } else Nil )
+  }
+
 
   protected def visitConstraint(ct: Constraint): List[String] = "TODO : NonRecursSBMLValidator Stub error" :: Nil
 
@@ -326,6 +394,34 @@ object SBMLValidatorForSimulation extends SBMLBeanVisitor[List[String]]{
 
 package helpers {
 
+  /**
+  * Implements methods necessary for checking the graph stricure of a model and its characteristics.
+  * Some SBML validations cannot be done without this
+  */
+  object SBMLGraphChecks {
+    import scalax.collection.mutable.Graph
+    import scalax.collection.GraphPredef._, scalax.collection.GraphEdge._
+
+    protected def generateGraphFromCompartmentOutsideRelations(model:SBMLModel):Graph[String,DiEdge] = {
+      var g = Graph[String,DiEdge]()
+      model.listOfCompartments.map( g add _.id )
+      model.listOfCompartments.filter(_.outside != null).map(c => {g add (c.id ~> c.outside)} )
+      g
+    }
+
+    def checkForCyclesInCompartments(model:SBMLModel):List[String] = {
+      val g = generateGraphFromCompartmentOutsideRelations(model)
+      g.
+        findCycle match {    //TODO there is a possible bug in the call to findcycle. Check if a correction for it appeared.
+        case Some(cyc) => {
+          "the directed graph formed by representing Compartment objects as vertexes and the outside attribute values as edges must be acyclic.\n" +
+          "As such the cycle formed by "+ cyc.dependentCycles + " must be undone (Section 4.7.7)" :: Nil
+        }
+        case None => Nil
+      }
+    }
+  }
+
   object XMLChecks extends XMLParser{
 
     /**
@@ -335,12 +431,27 @@ package helpers {
     def isValidIDType(metaid:String):List[String] = {
       parseAll(Name, metaid) match {
         case Success(_,_) => Nil
-        case Failure(_,_) => "" + metaid + " is not of type Id has defined in XML 1.0 specification" :: Nil
+        case Failure(_,_) => "" + metaid + " is not of type Id has defined in XML 1.0 specification (Section 3.1.6)" :: Nil
         case _ => {
           "Something is wrong with XML ID type validation " :: Nil
         }
       }
     }
+
+    /**
+     * Checks if the string respects XML 1.0 string type specification
+     * This is the string type of section 3.1.1 of the SBML specification
+     */
+    def isValidStringType(metaid:String):List[String] = {
+      parseAll(Name, metaid) match {
+        case Success(_,_) => Nil
+        case Failure(_,_) => "" + metaid + " is not of type string has defined in XML 1.0 specification (Section 3.1.1)" :: Nil
+        case _ => {
+          "Something is wrong with XML ID type validation " :: Nil
+        }
+      }
+    }
+
   }
 
   object SBMLl2v4Checks extends SBMLParser{
