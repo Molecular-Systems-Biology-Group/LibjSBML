@@ -11,7 +11,6 @@ package pt.cnbc.wikimodels.exceptions
  * Time: 12:11
  * To change this template use File | Settings | File Templates.
  */
-
 object ValidationDefaultCase {
   def exceptionHandling(e:Throwable):List[String] = {
     //TODO: maybe some log here

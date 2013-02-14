@@ -26,6 +26,8 @@ import pt.cnbc.wikimodels.util.{SBMLParser, XMLParser, XSDAwareXML}
 import dataVisitors.SBMLBeanVisitor
 import pt.cnbc.wikimodels.dataModel._
 import pt.cnbc.wikimodels.sbmlVisitors.helpers.SBMLGraphChecks
+import pt.cnbc.wikimodels.mathparser.{MathMLMatchParser, AsciiMathParser}
+import alexmsmartins.log.LoggerWrapper
 
 
 object SBMLValidator {
@@ -171,25 +173,32 @@ object SBMLStrictValidator extends SBMLBeanVisitor[List[String]]{
  * Detects errors in an SBML model that are specific to WikiModels.
  */
 object WikiModelsValidator extends SBMLBeanVisitor[List[String]]{
-  protected def visitModel(m: SBMLModel): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitModel(m: SBMLModel): List[String] =
+    m.listOfFunctionDefinitions.map(visitFunctionDefinition(_) ).flatMap(i => i).toList :::
+      m.listOfCompartments.map(visitCompartment(_) ).flatMap(i => i).toList :::
+      m.listOfSpecies.map(visitSpecies(_) ).flatMap(i => i).toList :::
+      m.listOfParameters.map(visitParameter(_) ).flatMap(i => i).toList :::
+      m.listOfConstraints.map(visitConstraint(_) ).flatMap(i => i).toList :::
+      m.listOfReactions.map(visitReaction(_) ).flatMap(i => i).toList ::: List[String]()
 
-  protected def visitCompartment(c: Compartment): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
 
-  protected def visitConstraint(ct: Constraint): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitCompartment(c: Compartment): List[String] = Nil
 
-  protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitConstraint(ct: Constraint): List[String] = Nil
 
-  protected def visitKineticLaw(kl: KineticLaw): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] = Nil
 
-  protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitKineticLaw(kl: KineticLaw): List[String] = Nil
 
-  protected def visitParameter(p: Parameter): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = Nil
 
-  protected def visitReaction(r: Reaction): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitParameter(p: Parameter): List[String] = Nil
 
-  protected def visitSpecies(s: Species): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitReaction(r: Reaction): List[String] = Nil
 
-  protected def visitSpeciesReference(sr: SpeciesReference): List[String] = "TODO : WikiModelsValidator Stub error" :: Nil
+  protected def visitSpecies(s: Species): List[String] = Nil
+
+  protected def visitSpeciesReference(sr: SpeciesReference): List[String] = Nil
 }
 
 
@@ -198,7 +207,13 @@ object WikiModelsValidator extends SBMLBeanVisitor[List[String]]{
  * is to simulate the model later
  */
 object GoodPracticesValidator extends SBMLBeanVisitor[List[String]]{
-  protected def visitModel(m: SBMLModel): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+  protected def visitModel(m: SBMLModel): List[String] =
+    m.listOfFunctionDefinitions.map(visitFunctionDefinition(_) ).flatMap(i => i).toList :::
+      m.listOfCompartments.map(visitCompartment(_) ).flatMap(i => i).toList :::
+      m.listOfSpecies.map(visitSpecies(_) ).flatMap(i => i).toList :::
+      m.listOfParameters.map(visitParameter(_) ).flatMap(i => i).toList :::
+      m.listOfConstraints.map(visitConstraint(_) ).flatMap(i => i).toList :::
+      m.listOfReactions.map(visitReaction(_) ).flatMap(i => i).toList ::: List[String]()
 
   protected def visitCompartment(c: Compartment): List[String] =
     if(c.size == null)
@@ -207,17 +222,20 @@ object GoodPracticesValidator extends SBMLBeanVisitor[List[String]]{
 
   protected def visitConstraint(ct: Constraint): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
 
-  protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+  protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] = Nil
 
   protected def visitKineticLaw(kl: KineticLaw): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
 
   protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
 
-  protected def visitParameter(p: Parameter): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+  protected def visitParameter(p: Parameter): List[String] = {
+    //TODO What if a global parameter has its constant attribute set to “false”, but the model does not contain any rules, events or other constructs that ever change its value over time? Although the model may be suspect,\n  this situation is not strictly an error. A value of “false” for constant only indicates that a parameter can change value, not that it must."
+    Nil
+  }
 
   protected def visitReaction(r: Reaction): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
 
-  protected def visitSpecies(s: Species): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
+  protected def visitSpecies(s: Species): List[String] = Nil
 
   protected def visitSpeciesReference(sr: SpeciesReference): List[String] = "TODO : BadPracticeValidator Stub error" :: Nil
 }
@@ -245,7 +263,7 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
     checkOptionalMetaId(c.metaid) :::
       checkMandatoryId(c.id) :::
       checkOptionalName(c.name) :::
-      CompartmentCheck.spatialDimensions(c.spatialDimensions) :::
+      CompartmentCheck.spatialDimensionsIsValid(c.spatialDimensions) :::
       CompartmentCheck.sizeIsValid(c.size)
 
   protected def visitConstraint(ct: Constraint): List[String] = "TODO  SBMLLooseValidator Constraint stub" :: Nil
@@ -253,7 +271,8 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
   protected def visitFunctionDefinition(fd: FunctionDefinition): List[String] =
     checkOptionalMetaId(fd.metaid) :::
       checkMandatoryId(fd.id) :::
-      checkOptionalName(fd.name)
+      checkOptionalName(fd.name) :::
+      FunctionDefCheck.mathIsValid(fd.math)
 
   protected def visitKineticLaw(kl: KineticLaw): List[String] = "TODO : SBMLLooseValidator Stub error" :: Nil
 
@@ -302,7 +321,7 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
   }
 
   object CompartmentCheck {
-    def spatialDimensions(spatialDimensions: java.lang.Integer):List[String] =
+    def spatialDimensionsIsValid(spatialDimensions: java.lang.Integer):List[String] =
       spatialDimensions match {
         case null => Nil
         case x if(x<=3 && x>=0) => Nil
@@ -317,6 +336,23 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
       }
     }
   }
+
+  object FunctionDefCheck extends MathMLMatchParser with LoggerWrapper{
+    def mathIsValid(math:String):List[String] = {
+      import pt.cnbc.wikimodels.mathparser
+      try{
+        parse(convertStringToXML(math))
+      //TODO
+      } catch {
+        case e: org.xml.sax.SAXParseException =>
+          List("XML_SCHMA_VALID ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage);
+        case re:RuntimeException =>
+          List(re.getMessage)
+        case e => throw e //this is not expected to happen. IF it does, add a case for the relevant exception
+      }
+      Nil
+    }
+  }
 }
 
 /**
@@ -325,9 +361,7 @@ object SBMLLooseValidator extends SBMLBeanVisitor[List[String]]{
  * does not check its sub-elements
  */
 object NonRecursSBMLValidator extends SBMLBeanVisitor[List[String]]{
-  protected def visitModel(m: SBMLModel): List[String] =
-    "TODO : WithinSBMLElementValidatorStub error" ::
-    Nil
+  protected def visitModel(m: SBMLModel): List[String] = Nil
 
   protected def visitCompartment(c: Compartment): List[String] = {
     if (c.spatialDimensions == 0 && c.size != null){
@@ -352,11 +386,11 @@ object NonRecursSBMLValidator extends SBMLBeanVisitor[List[String]]{
 
   protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): List[String] = "TODO : NonRecursSBMLValidator Stub error" :: Nil
 
-  protected def visitParameter(p: Parameter): List[String] = "TODO : NonRecursSBMLValidator Stub error" :: Nil
+  protected def visitParameter(p: Parameter): List[String] = Nil
 
   protected def visitReaction(r: Reaction): List[String] = "TODO : NonRecursSBMLValidator Stub error" :: Nil
 
-  protected def visitSpecies(s: Species): List[String] = "TODO : NonRecursSBMLValidator Stub error" :: Nil
+  protected def visitSpecies(s: Species): List[String] = Nil
 
   protected def visitSpeciesReference(sr: SpeciesReference): List[String] = "TODO : NonRecursSBMLValidator Stub error" :: Nil
 }

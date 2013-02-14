@@ -5,6 +5,8 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
       // Add Maven Local repository for SBT to search for (disable if this doesn't suit you)
       val mavenLocal = "Local Maven Repository" at "file://"+Path.userHome+"/.m2/repository"
 
+      val wm_libjsbml = "pt.cnbc.wikimodels"  % "wm_math_parser" % "0.1-SNAPSHOT"
+
       val mavenRepo = "Maven Central Repository 1" at "http://repo1.maven.org/maven2"
 
       val projectRepo = "WikiModels Repository" at "file://../localMavenRepo"
