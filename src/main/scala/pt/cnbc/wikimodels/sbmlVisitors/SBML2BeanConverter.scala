@@ -35,7 +35,6 @@ object SBML2BeanConverter {
   }
 
   def visitModel(m: Elem): SBMLModel = {
-
     var model = new SBMLModel(SBMLHandler.toStringOrNull((m \ "@metaid").text),
       SBMLHandler.checkCurrentLabelForNotes(m),
       SBMLHandler.toStringOrNull((m \ "@id").text),

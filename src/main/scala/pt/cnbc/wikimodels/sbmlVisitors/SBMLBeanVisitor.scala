@@ -23,7 +23,7 @@ import pt.cnbc.wikimodels.exceptions.BadFormatException
 trait SBMLBeanVisitor[T]{
   //TODO replace _.toXML with this visitor in the code
 
-  def visit(e: Element) = e match {
+  def visit[E <: Element](e: E) = e match {
     case m:SBMLModel => visitModel(m)
     case cp:Compartment => visitCompartment(cp)
     case ct:Constraint => visitConstraint(ct)
@@ -37,23 +37,23 @@ trait SBMLBeanVisitor[T]{
     case _ => throw new BadFormatException("Unknow element inside SBMLModel when generating SBML Lvel 2 Version 4")
   }
 
-  protected def visitModel(m: SBMLModel): T
+  def visitModel(m: SBMLModel): T
 
-  protected def visitCompartment(c: Compartment): T
+  def visitCompartment(c: Compartment): T
 
-  protected def visitConstraint(ct: Constraint): T
+  def visitConstraint(ct: Constraint): T
 
-  protected def visitFunctionDefinition(fd: FunctionDefinition): T
+  def visitFunctionDefinition(fd: FunctionDefinition): T
 
-  protected def visitKineticLaw(kl: KineticLaw): T
+  def visitKineticLaw(kl: KineticLaw): T
 
-  protected def visitModifierSpeciesReference(msr: ModifierSpeciesReference): T
+  def visitModifierSpeciesReference(msr: ModifierSpeciesReference): T
 
-  protected def visitParameter(p: Parameter): T
+  def visitParameter(p: Parameter): T
 
-  protected def visitReaction(r: Reaction): T
+  def visitReaction(r: Reaction): T
 
-  protected def visitSpecies(s: Species): T
+  def visitSpecies(s: Species): T
 
-  protected def visitSpeciesReference(sr: SpeciesReference): T
+  def visitSpeciesReference(sr: SpeciesReference): T
 }
