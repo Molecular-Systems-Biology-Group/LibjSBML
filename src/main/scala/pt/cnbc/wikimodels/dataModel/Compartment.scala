@@ -60,8 +60,6 @@ case class Compartment() extends Element {
     SBMLHandler.idExistsAndIsValid(this.id)
     if (this.spatialDimensions < 0 || spatialDimensions > 3)
       throw new BadFormatException("" + spatialDimensions + " is an invalid value for spatialDimensions");
-    if (spatialDimensions == 0 && size != null)
-      throw new BadFormatException("size should not exist when spatialDimensions is 0");
     if (size != null && size.compareTo(0) < 0)
       throw new BadFormatException("size should have a positive value");
   }
