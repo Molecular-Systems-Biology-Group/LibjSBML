@@ -14,8 +14,9 @@ package pt.cnbc.wikimodels.sbmlVisitors
 
 import pt.cnbc.wikimodels.dataModel._
 import xml.{XML, Elem}
-import pt.cnbc.wikimodels.util.SBMLHandler
+import pt.cnbc.wikimodels.util.{XSDAwareXML, SBMLHandler}
 import pt.cnbc.wikimodels.exceptions.BadFormatException
+import pt.cnbc.wikimodels.mathparser.MathMLMatchParser
 
 /**
  * TODO: Please document.
@@ -114,11 +115,13 @@ object Bean2SBMLConverter{
     </constraint>
 
 
-  def visitFunctionDefinition(fd: FunctionDefinition): Elem =
+  def visitFunctionDefinition(fd: FunctionDefinition): Elem = {
+    val mathmlElem = MathMLMatchParser().convertStringToXML(fd.math)
     <functionDefinition metaid={fd.metaid} id={fd.id} name={fd.name}>
       {SBMLHandler.genNotesFromHTML(fd.notes)}
-      {XML.loadString(fd.math)}
+      {mathmlElem}
     </functionDefinition>
+  }
 
 
   def visitKineticLaw(kl: KineticLaw): Elem =

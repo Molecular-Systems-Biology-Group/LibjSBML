@@ -31,7 +31,7 @@ class RestProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
       val usefullScalaStuff = "UsefullScalaStuff" % "UsefullScalaStuff" % "0.1" 
       
-      val slf4jApi = "org.slf4j" % "slf4j-api" % "1.6.1" 
+      val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.5"
       
       val logbackclassic = "ch.qos.logback" % "logback-classic" % "0.9.29"
 
