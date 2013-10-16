@@ -211,6 +211,7 @@
             <plugin>
                 <groupId>net.sf.alchim</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>0.7.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -220,26 +221,6 @@
                 </executions>
                 <configuration>
                     <nosuffix>true</nosuffix>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <excludes>
-                        <exclude>org.scala-lang:scala-library</exclude>
-                    </excludes>
-                    <classpathContainers>
-                        <classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
-                    </classpathContainers>
-                    <projectnatures>
-                        <java.lang.String>ch.epfl.lamp.sdt.core.scalanature</java.lang.String>
-                        <java.lang.String>org.eclipse.jdt.core.javanature</java.lang.String>
-                    </projectnatures>
-                    <buildcommands>
-                        <java.lang.String>ch.epfl.lamp.sdt.core.scalabuilder</java.lang.String>
-                    </buildcommands>
                 </configuration>
             </plugin>
         </plugins>
