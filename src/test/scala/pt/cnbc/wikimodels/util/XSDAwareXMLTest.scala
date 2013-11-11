@@ -15,6 +15,7 @@ import scala.xml._
 import pt.cnbc.wikimodels.sbmlVisitors.SBMLValidator
 import java.io.{Reader, FileInputStream, File}
 import xml.Source._
+import alexmsmartins.log.LoggerWrapper
 
 /**
  * Created by IntelliJ IDEA.
@@ -101,7 +102,7 @@ class XSDAwareXMLTest {
       assertNotNull(xmlElem)
     } catch {
       case e: org.xml.sax.SAXParseException =>{
-        Console.println("XML_SCHMA_VALID ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage);
+        LoggerWrapper.error("1 - XML_SCHMA_VALID ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage);
         assertTrue(true)
         throw e
       }
@@ -122,7 +123,7 @@ class XSDAwareXMLTest {
       fail()
     } catch {
       case e: org.xml.sax.SAXParseException => {
-        Console.println("XML_SCHMA_VALID ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage);
+        Console.println("2 - XML_SCHMA_VALID ERROR at [" + e.getLineNumber + ","+ e.getColumnNumber + "]: " + e.getMessage);
         assertTrue(true)
       }
     }
