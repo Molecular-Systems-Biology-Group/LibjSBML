@@ -91,12 +91,7 @@
             <artifactId>wm_math_parser</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.scalaj</groupId>
-            <artifactId>scalaj-collection_${scala.version}</artifactId>
-            <version>1.1</version>
-          </dependency>-->
-          <!-- scalaish wrapper around SLF4J -->
+         <!-- scalaish wrapper around SLF4J -->
         <!--<dependency>
             <groupId>UsefullScalaStuff</groupId>
             <artifactId>UsefullScalaStuff</artifactId>
@@ -144,37 +139,17 @@
             <artifactId>graph-core_${scala.major.version}</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>UsefullScalaStuff</groupId>
+            <artifactId>UsefullScalaStuff</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
         <testSourceDirectory>src/test/scala</testSourceDirectory>
         <plugins>
-
-            <!--<plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>${maven.scala.plugin}</version>
-                <configuration>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>scala-compile-first</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>scala-test-compile</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-            <plugin>
+           <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
                 <version>3.1.5</version>
@@ -188,7 +163,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <scalaVerion>${scala.version}</scalaVerion>
+                    <scalaVersion>${scala.version}</scalaVersion>
                 </configuration>
             </plugin>
             <plugin>

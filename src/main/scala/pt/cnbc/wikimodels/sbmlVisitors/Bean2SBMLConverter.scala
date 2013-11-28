@@ -17,6 +17,7 @@ import xml.{XML, Elem}
 import pt.cnbc.wikimodels.util.{XSDAwareXML, SBMLHandler}
 import pt.cnbc.wikimodels.exceptions.BadFormatException
 import pt.cnbc.wikimodels.mathparser.MathMLMatchParser
+import alexmsmartins.log.LoggerWrapper
 
 /**
  * TODO: Please document.
@@ -24,7 +25,7 @@ import pt.cnbc.wikimodels.mathparser.MathMLMatchParser
  * Date: 07-10-2011
  * Time: 19:13
  */
-object Bean2SBMLConverter{
+object Bean2SBMLConverter extends LoggerWrapper{
   import scala.collection.JavaConversions._
   //TODO replace _.toXML with this visitor in the code
 
@@ -117,10 +118,12 @@ object Bean2SBMLConverter{
 
   def visitFunctionDefinition(fd: FunctionDefinition): Elem = {
     val mathmlElem = MathMLMatchParser().convertStringToXML(fd.math)
-    <functionDefinition metaid={fd.metaid} id={fd.id} name={fd.name}>
+    debug("Mathml element in visitFunctionDefinition is {}", mathmlElem)
+
+    debug("XML is {} ", <functionDefinition metaid={fd.metaid} id={fd.id} name={fd.name}>
       {SBMLHandler.genNotesFromHTML(fd.notes)}
       {mathmlElem}
-    </functionDefinition>
+    </functionDefinition> )
   }
 
 
